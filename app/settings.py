@@ -45,9 +45,9 @@ class Settings(BaseSettings):
     # Variables for the database
     db_host: str = "localhost"
     db_port: int = 5432
-    db_user: str = "sherpa"
-    db_pass: str = "sherpa"
-    db_base: str = "sherpa"
+    db_user: str = "gateway"
+    db_pass: str = "gateway"
+    db_base: str = "gateway"
     db_echo: bool = False
 
     # OpenAI API key
@@ -81,7 +81,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
-        env_prefix = "SHERPA_"
+        env_prefix = "GATEWAY_"
         env_file_encoding = "utf-8"
 
 

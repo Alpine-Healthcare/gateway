@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  sherpa: &main_app
+  gateway: &main_app
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -15,9 +15,9 @@ services:
     env_file:
       - .env
     environment:
-      SHERPA_HOST: 0.0.0.0
-      SHERPA_DB_HOST: sherpa-db
-      SHERPA_DB_PORT: 5432
-      SHERPA_DB_USER: sherpa
-      SHERPA_DB_PASS: sherpa
-      SHERPA_DB_BASE: sherpa
+      GATEWAY_HOST: 0.0.0.0
+      GATEWAY_DB_HOST: gateway-db
+      GATEWAY_DB_PORT: 5432
+      GATEWAY_DB_USER: gateway
+      GATEWAY_DB_PASS: gateway
+      GATEWAY_DB_BASE: gateway

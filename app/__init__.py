@@ -1,1 +1,1 @@
-"""sherpa package."""
+"""gateway package."""

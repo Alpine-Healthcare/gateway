@@ -1,1 +1,1 @@
-"""sherpa API package."""
+"""gateway API package."""

@@ -49,7 +49,7 @@ httpx = "^0.23.3"
 [tool.isort]
 profile = "black"
 multi_line_output = 3
-src_paths = ["sherpa",]
+src_paths = ["gateway",]
 
 [tool.mypy]
 strict = true
@@ -72,8 +72,8 @@ filterwarnings = [
     "ignore:.*unclosed.*:ResourceWarning",
 ]
 env = [
-    "SHERPA_ENVIRONMENT=pytest",
-    "SHERPA_DB_BASE=sherpa_test",
+    "GATEWAY_ENVIRONMENT=pytest",
+    "GATEWAY_DB_BASE=gateway_test",
 ]
 
 [fastapi-template.options]
@@ -85,7 +85,7 @@ ci_type = "github"
 enable_migrations = "True"
 enable_taskiq = "None"
 enable_kube = "None"
-kube_name = "sherpa"
+kube_name = "gateway"
 enable_routers = "True"
 enable_kafka = "None"
 enable_loguru = "None"

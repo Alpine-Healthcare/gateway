@@ -1,1 +1,1 @@
-"""WEB API for sherpa."""
+"""WEB API for gateway."""

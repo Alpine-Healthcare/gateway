@@ -1,4 +1,4 @@
-"""sherpa models."""
+"""gateway models."""
 import pkgutil
 from pathlib import Path
 

@@ -1,4 +1,4 @@
-# sherpa
+# gateway
 
 This project was generated using fastapi_template.
 
@@ -11,7 +11,7 @@ To run the project use this set of commands:
 
 ```bash
 poetry install
-poetry run python -m sherpa
+poetry run python -m gateway
 ```
 
 This will start the server on the configured host.
@@ -46,8 +46,8 @@ docker-compose -f deploy/docker-compose.yml --project-directory . build
 ## Project structure
 
 ```bash
-$ tree "sherpa"
-sherpa
+$ tree "gateway"
+gateway
 ├── conftest.py  # Fixtures for all tests.
 ├── db  # module contains db configurations
 │   ├── dao  # Data Access Objects. Contains different classes to interact with database.
@@ -71,18 +71,18 @@ This application can be configured with environment variables.
 You can create `.env` file in the root directory and place all
 environment variables here.
 
-All environment variables should start with "SHERPA_" prefix.
+All environment variables should start with "GATEWAY_" prefix.
 
-For example if you see in your "sherpa/settings.py" a variable named like
-`random_parameter`, you should provide the "SHERPA_RANDOM_PARAMETER"
+For example if you see in your "gateway/settings.py" a variable named like
+`random_parameter`, you should provide the "GATEWAY_RANDOM_PARAMETER"
 variable to configure the value. This behaviour can be changed by overriding `env_prefix` property
-in `sherpa.settings.Settings.Config`.
+in `gateway.settings.Settings.Config`.
 
 An example of .env file:
 ```bash
-SHERPA_RELOAD="True"
-SHERPA_PORT="8000"
-SHERPA_ENVIRONMENT="dev"
+GATEWAY_RELOAD="True"
+GATEWAY_PORT="8000"
+GATEWAY_ENVIRONMENT="dev"
 ```
 
 You can read more about BaseSettings class here: https://pydantic-docs.helpmanual.io/usage/settings/
@@ -154,7 +154,7 @@ For running tests on your local machine.
 
 I prefer doing it with docker:
 ```
-docker run -p "5432:5432" -e "POSTGRES_PASSWORD=sherpa" -e "POSTGRES_USER=sherpa" -e "POSTGRES_DB=sherpa" postgres:13.8-bullseye
+docker run -p "5432:5432" -e "POSTGRES_PASSWORD=gateway" -e "POSTGRES_USER=gateway" -e "POSTGRES_DB=gateway" postgres:13.8-bullseye
 ```
 
 

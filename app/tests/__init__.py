@@ -1,1 +1,1 @@
-"""Tests for sherpa."""
+"""Tests for gateway."""

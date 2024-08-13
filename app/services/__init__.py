@@ -1,1 +1,1 @@
-"""Services for sherpa."""
+"""Services for gateway."""
