@@ -1,0 +1,107 @@
+[tool.poetry]
+name = "app"
+version = "0.0.1"
+description = ""
+authors = [
+
+]
+maintainers = [
+
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.100.0"
+uvicorn = { version = "^0.22.0", extras = ["standard"] }
+gunicorn = "^21.2.0"
+pydantic = { version = "^1", extras=["dotenv"] }
+yarl = "^1.9.2"
+ujson = "^5.8.0"
+SQLAlchemy = {version = "^2.0.18", extras = ["asyncio"]}
+alembic = "^1.11.1"
+asyncpg = {version = "^0.28.0", extras = ["sa"]}
+aiofiles = "^23.1.0"
+httptools = "^0.6.0"
+strawberry-graphql = { version = "^0.194.4", extras = ["fastapi"] }
+pyroscope-io = "^0.8.7"
+openai = "^1.31.0"
+webauthn = "^2.1.0"
+python-dotenv = "^1.0.1"
+gql = {extras = ["all"], version = "^3.5.0"}
+requests = "^2.32.3"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.1"
+flake8 = "~4.0.1"
+mypy = "^1.1.1"
+isort = "^5.11.4"
+pre-commit = "^3.0.1"
+wemake-python-styleguide = "^0.17.0"
+black = "^22.12.0"
+autoflake = "^1.6.1"
+pytest-cov = "^4.0.0"
+anyio = "^3.6.2"
+pytest-env = "^0.8.1"
+httpx = "^0.23.3"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+src_paths = ["sherpa",]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+allow_subclassing_any = true
+allow_untyped_calls = true
+pretty = true
+show_error_codes = true
+implicit_reexport = true
+allow_untyped_decorators = true
+warn_unused_ignores = false
+warn_return_any = false
+namespace_packages = true
+plugins = ["strawberry.ext.mypy_plugin"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+    "ignore:.*unclosed.*:ResourceWarning",
+]
+env = [
+    "SHERPA_ENVIRONMENT=pytest",
+    "SHERPA_DB_BASE=sherpa_test",
+]
+
+[fastapi-template.options]
+project_name = "PDOS Gateway"
+api_type = "graphql"
+enable_redis = "None"
+enable_rmq = "None"
+ci_type = "github"
+enable_migrations = "True"
+enable_taskiq = "None"
+enable_kube = "None"
+kube_name = "sherpa"
+enable_routers = "True"
+enable_kafka = "None"
+enable_loguru = "None"
+traefik_labels = "True"
+add_dummy = "True"
+orm = "sqlalchemy"
+self_hosted_swagger = "True"
+prometheus_enabled = "None"
+sentry_enabled = "None"
+otlp_enabled = "None"
+pydanticv1 = "True"
+gunicorn = "True"
+add_users = "None"
+cookie_auth = "None"
+jwt_auth = "None"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
