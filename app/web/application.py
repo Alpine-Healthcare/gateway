@@ -13,9 +13,8 @@ from app.utils.log_config import LogConfig
 dictConfig(LogConfig().dict())
 logger = logging.getLogger("mycoolapp")
 
-from app.services.pdfs.ipfs import start_ipfs
+from app.services.pdos.ipfs import start_ipfs
 from app.web.api.router import api_router
-from app.web.gql.router import gql_router
 from app.web.lifetime import register_shutdown_event, register_startup_event
 
 APP_ROOT = Path(__file__).parent.parent

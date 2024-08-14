@@ -1,18 +1,65 @@
 import json
-from typing import Dict, List, Optional, TypeAlias
+from typing import List, Optional
 from fastapi import APIRouter
-import os
-from datetime import datetime
-from app.services.pdfs.pdfs import get_node_from_pdfs, add_node_to_pdfs
-from app.services.pdfs.model import Edge, NetworkMapper, PDFSNode
-from pydantic import BaseModel,  create_model
-from app.services.pdfs import ipfs
-from typing import Generic, TypeVar, Type
+from app.services.pdos.pdos import get_node_from_pdfs, add_node_to_pdfs
+from app.services.pdos.model import Edge, NetworkMapper, PDFSNode
+from pydantic import BaseModel
+from app.services.pdos import ipfs
+from typing import Generic, TypeVar
 from pydantic.generics import GenericModel
+import threading
 
 
 router = APIRouter()
 
+'''
+PDOS Mutex Routes
+
+TBD
+
+'''
+
+user_mutexes = {}
+
+@router.get("/pdos/mutex")
+def get_pdos_mutex(
+    credential_id: str,
+) -> bool:
+    if credential_id in user_mutexes:
+        mutex = user_mutexes[credential_id]
+        if mutex.locked():
+            return False
+        else:
+            mutex.acquire()
+            return True
+    else:
+        user_mutexes[credential_id] = threading.Lock()
+        user_mutexes[credential_id].acquire()
+        return True
+
+
+@router.post("/pdos/release_mutex")
+def release_pdos_mutex(
+    credential_id: str,
+) -> bool:
+    if credential_id not in user_mutexes:
+        return False
+    else:
+        mutex = user_mutexes[credential_id]
+        if mutex.locked():
+            mutex.release()
+            return True
+        else:
+            return False
+
+
+'''
+PDOS Tree Routes
+
+TBD
+
+
+'''
 
 @router.get("/pdos")
 def get_node_from_pdos(
@@ -20,8 +67,6 @@ def get_node_from_pdos(
 ):
     assert hash is not None, "No hash id passed"
     return get_node_from_pdfs(hash).json()
-
-
 
 class NewPDFSNodeRequest(BaseModel):
     new_node_type: Optional[str] = None
@@ -67,7 +112,12 @@ def is_instance_node(node_type: str):
     node_split = node_type.split("_") 
     return len(node_split) == 3
 
+'''
+Adds node to PDOS
 
+This entails adding the node to the IPFS network and updating the parent nodes,
+generating a new tree root.
+'''
 @router.post("/pdos")
 def add_node_to_pdos(
     new_pdfs_node: NewPDFSNodeRequest
@@ -75,7 +125,6 @@ def add_node_to_pdos(
     core_node_type = get_core_node_type(new_pdfs_node.new_node_type) 
     new_node_data_json = json.loads(new_pdfs_node.new_node_data)
     data_model = NetworkMapper.node[core_node_type](**new_node_data_json)
-    print("data_model", data_model)
 
     if is_instance_node(new_pdfs_node.new_node_type):
         data_model.init_instance(get_node_instance_type(new_pdfs_node.new_node_type)) 

@@ -1,10 +1,9 @@
+import datetime
 import json
-from typing import Optional
-from app.services.pdfs.model import Credential, Edge, N_AccessPackage, N_UserAccount, NetworkMapper, PDFSNode 
-from app.services.pdfs import ipfs
+from app.services.pdos.model import Credential, Edge, N_AccessPackage, N_UserAccount, NetworkMapper, PDFSNode 
+from app.services.pdos import ipfs
 from app.web.application import logger
 from base64 import urlsafe_b64encode
-
 
 
 def bytes_to_base64url(val: bytes) -> str:
@@ -13,12 +12,12 @@ def bytes_to_base64url(val: bytes) -> str:
     """
     return urlsafe_b64encode(val).decode("utf-8").rstrip("=")
 
-registering_user_map = {}
-validating_user_map = {}
-
 '''
 User Registration Util Functions
 '''
+registering_user_map = {}
+validating_user_map = {}
+
 def store_potential_user_and_challenge(
     user_id: str,
     username: str,
@@ -56,20 +55,18 @@ def get_user_challenge(
 def get_user_by_credential_id(
     credential_id: str
 ):
-    for user_edge in ipfs.ALPINE_NODE_MANIFEST.users:
-        print("user_edge:", user_edge)
-        user_node = get_node_from_pdfs(user_edge) 
-        for credential in user_node.credentials:
-            if credential.id == credential_id:
-
-                return user_node
+    if credential_id in ipfs.ALPINE_NODE_MANIFEST.users:
+        user_info = ipfs.ALPINE_NODE_MANIFEST.users[credential_id]
+        user_node = get_node_from_pdfs(user_info["hash_id"]) 
+        return user_node
+    else:
+        raise RuntimeError(f"User not found {credential_id}")
 
 
 def get_access_package_in_json_format(
     user: N_UserAccount
 ) -> str:
     #return get_node_from_pdfs(user.edges["e_out_access_package"].child_hash_id, "N_AccessPackage").json()
-    print("user: ", user)
     ret = '{ "hashId":' + user.hash_id + '}'
     return user.hash_id 
 
@@ -84,6 +81,7 @@ def add_user_to_network(
 
     new_user = registering_user_map[user_id].get("user")
     new_user.credentials.append(credential)
+    user_credential_id = credential.id
 
     new_access_package = N_AccessPackage(key="default")
     access_package = add_node_to_pdfs(new_access_package)
@@ -95,14 +93,16 @@ def add_user_to_network(
 
     new_user.edges["e_out_AccessPackage"] = access_package_edge
 
-    print("new _user: ", new_user)
-
     user = add_node_to_pdfs(new_user)
     logger.info(f"Added user to network: {user_id}")
 
     alpine = ipfs.ALPINE_NODE_MANIFEST 
     updated_alpine = alpine.copy()
-    updated_alpine.users[user.hash_id] = True
+
+    updated_alpine.users[user_credential_id] = {
+        "hash_id": user.hash_id,
+        "timestamp": datetime.now().isoformat()
+    }
 
     ipfs.update_alpine_node_manifest(updated_alpine)
     return user
@@ -124,7 +124,7 @@ def add_node_to_pdfs(node: PDFSNode) -> PDFSNode:
 
 
 def get_node_from_pdfs(hash_id: str):
-    from app.web.api.routes.pdfs import get_core_node_type
+    from gateway.app.web.api.routes.pdos import get_core_node_type
 
     node = ipfs.get(hash_id)
     node["hash_id"] = hash_id

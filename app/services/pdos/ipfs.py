@@ -1,4 +1,4 @@
-from app.services.pdfs.model import AlpineNodeManifest
+from app.services.pdos.model import AlpineNodeManifest
 from app.web.application import logger
 from app.settings import settings
 import requests

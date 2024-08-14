@@ -1,8 +1,16 @@
 import json
-from fastapi import APIRouter, Response, status
-from fastapi.responses import RedirectResponse
-from app.services.pdfs.pdfs import add_user_to_network, bytes_to_base64url, get_access_package_in_json_format, get_registering_user_challenge, get_user_by_credential_id, get_user_challenge, store_potential_user_and_challenge, store_user_challenge
-from app.services.pdfs.model import Credential
+from fastapi import APIRouter
+from app.services.pdos.pdos import (
+    add_user_to_network,
+    bytes_to_base64url,
+    get_access_package_in_json_format,
+    get_registering_user_challenge,
+    get_user_by_credential_id,
+    get_user_challenge,
+    store_potential_user_and_challenge,
+    store_user_challenge
+)
+from app.services.pdos.model import Credential
 from webauthn import (
     generate_registration_options,
     verify_registration_response,
@@ -25,7 +33,6 @@ from webauthn.helpers.structs import (
 )
 from typing import Dict, Any
 from app.settings import settings
-from app.web.application import logger
 
 router = APIRouter()
 
