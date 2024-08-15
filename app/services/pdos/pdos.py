@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import json
 from app.services.pdos.model import Credential, Edge, N_AccessPackage, N_UserAccount, NetworkMapper, PDFSNode 
 from app.services.pdos import ipfs
@@ -101,7 +101,7 @@ def add_user_to_network(
 
     updated_alpine.users[user_credential_id] = {
         "hash_id": user.hash_id,
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().timestamp()
     }
 
     ipfs.update_alpine_node_manifest(updated_alpine)
@@ -124,7 +124,7 @@ def add_node_to_pdfs(node: PDFSNode) -> PDFSNode:
 
 
 def get_node_from_pdfs(hash_id: str):
-    from gateway.app.web.api.routes.pdos import get_core_node_type
+    from app.web.api.routes.pdos import get_core_node_type
 
     node = ipfs.get(hash_id)
     node["hash_id"] = hash_id

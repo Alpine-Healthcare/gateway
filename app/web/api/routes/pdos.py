@@ -1,8 +1,9 @@
+from datetime import datetime
 import json
 from typing import List, Optional
 from fastapi import APIRouter
 from app.services.pdos.pdos import get_node_from_pdfs, add_node_to_pdfs
-from app.services.pdos.model import Edge, NetworkMapper, PDFSNode
+from app.services.pdos.model import Edge, N_UserAccount, NetworkMapper, PDFSNode
 from pydantic import BaseModel
 from app.services.pdos import ipfs
 from typing import Generic, TypeVar
@@ -21,33 +22,51 @@ TBD
 
 user_mutexes = {}
 
+@router.get("/pdos/users")
+def get_pdos_users():
+    return ipfs.ALPINE_NODE_MANIFEST.users
+
+
 @router.get("/pdos/mutex")
 def get_pdos_mutex(
     credential_id: str,
-) -> bool:
+):
     if credential_id in user_mutexes:
-        mutex = user_mutexes[credential_id]
-        if mutex.locked():
-            return False
+        mutexInfo = user_mutexes[credential_id]
+        if mutexInfo["mutex"].locked():
+            return {
+                "acquired": False,
+                "timestamp": mutexInfo["timestamp"]
+            } 
         else:
-            mutex.acquire()
-            return True
+            mutexInfo["mutex"].acquire()
+            mutexInfo["timestamp"] = datetime.now().isoformat()
+            return {
+                "acquired": True,
+                "timestamp": mutexInfo["timestamp"]
+            } 
     else:
-        user_mutexes[credential_id] = threading.Lock()
-        user_mutexes[credential_id].acquire()
-        return True
+        user_mutexes[credential_id] = {
+            "mutex": threading.Lock(),
+            "timestamp": datetime.now().isoformat()
+        }
+        user_mutexes[credential_id]["mutex"].acquire()
+        return {
+            "acquired": True,
+            "timestamp": user_mutexes[credential_id]["timestamp"]
+        } 
 
 
-@router.post("/pdos/release_mutex")
+@router.get("/pdos/mutex/release")
 def release_pdos_mutex(
     credential_id: str,
 ) -> bool:
     if credential_id not in user_mutexes:
         return False
     else:
-        mutex = user_mutexes[credential_id]
-        if mutex.locked():
-            mutex.release()
+        mutexInfo = user_mutexes[credential_id]
+        if mutexInfo["mutex"].locked():
+            mutexInfo["mutex"].release()
             return True
         else:
             return False
@@ -160,11 +179,15 @@ def add_node_to_pdos(
             if (parent_node.type == "N_UserAccount"):
                 alpine = ipfs.ALPINE_NODE_MANIFEST 
                 updated_alpine = alpine.copy()
+                userAccount = N_UserAccount(**parent_node.dict())
 
                 if (parent_node.hash_id in updated_alpine.users):
                     del updated_alpine.users[parent_node.hash_id]
 
-                updated_alpine.users[new_parent_node.hash_id] = True
+                updated_alpine.users[userAccount.credentials[0].id] = {
+                    "hash_id": new_parent_node.hash_id,
+                    "timestamp": datetime.now().timestamp()
+                }
                 ipfs.update_alpine_node_manifest(updated_alpine)
         else:
             update_parent_nodes(parent_node_hash_list, new_parent_node)

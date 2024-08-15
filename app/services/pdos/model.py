@@ -144,9 +144,12 @@ class N_UserAccount(PDFSNode):
             if key not in self.edges:
                 self.edges[key] = None
 
+class AlpineNodeManifestUser(BaseModel):
+    hash_id: str
+    timestamp: float
 
 class AlpineNodeManifest(BaseModel):
-    users: dict[str, bool] = {}
+    users: dict[str, AlpineNodeManifestUser] = {}
 
 
 '''
