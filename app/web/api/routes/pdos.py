@@ -27,6 +27,16 @@ def get_pdos_users():
     return ipfs.ALPINE_NODE_MANIFEST.users
 
 
+@router.get("/pdos/users/{credential_id}")
+def get_pdos_users(
+    credential_id: str,
+):
+    if credential_id in ipfs.ALPINE_NODE_MANIFEST.users:
+        return [ credential_id, ipfs.ALPINE_NODE_MANIFEST.users[credential_id]]
+    else:
+        return None
+
+
 @router.get("/pdos/mutex")
 def get_pdos_mutex(
     credential_id: str,

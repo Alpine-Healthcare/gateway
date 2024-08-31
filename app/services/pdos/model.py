@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, Field 
 from dataclasses import dataclass, field
 from typing import List, Optional
@@ -59,8 +60,8 @@ class N_TreatmentBinary(PDFSNode):
     name: str = "2 Weight Watcher"
     detail: str = "Tracks your weight and gives updates on progress towards your weight goal."
     data_manifest: dict[str, BinaryDataManifest] = { }
+    frequency: str = ""
     execution_binaries: dict[str, str] = { }
-    runtime: dict[str, str] = { }
 
 
 class N_Treatment_I(PDFSNode):
@@ -78,21 +79,12 @@ class N_Treatment_I(PDFSNode):
         self.treatment = instanceType
         self.type = "N_Treatment_" + instanceType
 
-class N_DataMetric_I(PDFSNode):
-    type = "N_DataGroup_"
-    metric: str = ""
-    edges: dict[str, Optional[Edge]] = {}
-
-    def init_instance(self, instanceType: str):
-        self.type = instanceType
-        self.type = "N_DataGroup_" + instanceType
-
 
 class N_DataGroup_I(PDFSNode):
     type = "N_DataGroup_"
-    metric: str = ""
-    value: Optional[int]
+    metric: str = ''
     edges: dict[str, Optional[Edge]] = {}
+    records: dict[str, float]
 
     def init_instance(self, instanceType: str):
         self.type = instanceType

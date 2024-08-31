@@ -68,7 +68,7 @@ def get_access_package_in_json_format(
 ) -> str:
     #return get_node_from_pdfs(user.edges["e_out_access_package"].child_hash_id, "N_AccessPackage").json()
     ret = '{ "hashId":' + user.hash_id + '}'
-    return user.hash_id 
+    return user.credentials[0].id
 
 
 '''
