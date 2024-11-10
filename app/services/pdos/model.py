@@ -55,6 +55,12 @@ class BinaryDataManifest(BaseModel):
 Nodes and Edges
 '''
 
+class N_TreatmentInstance_I(PDFSNode):
+    type = "N_TreatmentInstance_I"
+    messages: List[str] = []
+    media: Optional[str] = None
+
+
 class N_TreatmentBinary(PDFSNode):
     type = "N_TreatmentBinary"
     name: str = "2 Weight Watcher"
@@ -114,6 +120,8 @@ class N_Inbox(PDFSNode):
 class N_UserAccount(PDFSNode):
     type = "N_UserAccount"
     is_root = True
+
+    expoPushNotificationToken: Optional[str] = None
 
     credentials: List[Credential] 
 

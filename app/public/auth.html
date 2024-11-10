@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="./favicon.ico" />
   <title>Alpine</title>
-  <script src="https://unpkg.com/@simplewebauthn/browser"></script>
+  <script src="https://unpkg.com/@simplewebauthn/browser@10.0.0/dist/bundle/index.umd.min.js"></script>
 
 
   <meta property="og:title" content="Alpine" />
@@ -203,6 +203,7 @@
           },
         })
         const registrationOptionsParsed = JSON.parse(await registrationOptions.json())
+        console.log("registrationOptionsParsed", registrationOptionsParsed)
         const regResp = await SimpleWebAuthnBrowser.startRegistration(registrationOptionsParsed);
 
         setMessage('Registration in progess, adding user to ipfs', true)
