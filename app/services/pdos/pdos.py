@@ -94,7 +94,7 @@ def add_user_to_network(
     new_user.edges["e_out_AccessPackage"] = access_package_edge
 
     user = add_node_to_pdfs(new_user)
-    logger.info(f"Added user to network: {user_id}")
+    logger.info(f"Added user to network: {user_credential_id}")
 
     alpine = ipfs.ALPINE_NODE_MANIFEST 
     updated_alpine = alpine.copy()
@@ -115,6 +115,8 @@ Core Operations
 def add_node_to_pdfs(node: PDFSNode) -> PDFSNode:
     node_json = json.loads(node.json())
     node_json.pop("hash_id ", None)
+
+    del node_json["hash_id"]
 
     hash = ipfs.add(json.dumps(node_json))
 

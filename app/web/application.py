@@ -9,6 +9,8 @@ from fastapi.staticfiles import StaticFiles
 from logging.config import dictConfig
 import logging
 from app.utils.log_config import LogConfig
+from fastapi.middleware.cors import CORSMiddleware
+
 
 dictConfig(LogConfig().dict())
 logger = logging.getLogger("mycoolapp")
@@ -16,6 +18,11 @@ logger = logging.getLogger("mycoolapp")
 from app.services.pdos.ipfs import start_ipfs
 from app.web.api.router import api_router
 from app.web.lifetime import register_shutdown_event, register_startup_event
+
+# Define the allowed origins
+origins = [
+    "http://localhost:3000",  # Frontend development server
+]
 
 APP_ROOT = Path(__file__).parent.parent
 
@@ -51,6 +58,14 @@ def get_app() -> FastAPI:
         "/public",
         StaticFiles(directory=APP_ROOT / "public"),
         name="public",
+    )
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,  # List of allowed origins
+        allow_credentials=True,  # Allow cookies or Authorization headers
+        allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+        allow_headers=["*"],  # Allow all headers
     )
 
     start_ipfs()

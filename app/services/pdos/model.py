@@ -39,7 +39,7 @@ class Edge(BaseModel):
 
 class PDFSNode(BaseModel):
     type: Optional[str]
-    hash_id: Optional[str] 
+    hash_id: Optional[str]
     is_root: Optional[bool] = False
     edges: Optional[dict[str, Optional[Edge]]]
 
@@ -158,10 +158,13 @@ Graph Mapper
 class NetworkMapperClass(BaseModel):
     node ={
         "N_Inbox": N_Inbox,
+
         "N_AccessPackage": N_AccessPackage,
         "N_UserAccount": N_UserAccount,
+
         "N_DataManifest": N_DataManifest,
         "N_DataGroup_I": N_DataGroup_I,
+
         "N_TreatmentManifest": N_TreatmentManifest,
         "N_Treatment_I": N_Treatment_I,
         "N_TreatmentBinary": N_TreatmentBinary,
