@@ -151,6 +151,7 @@ generating a new tree root.
 def add_node_to_pdos(
     new_pdfs_node: NewPDFSNodeRequest
 ) -> NewPDFSNodeResponse:
+    print("new_pdfs_node: ",new_pdfs_node)
     core_node_type = get_core_node_type(new_pdfs_node.new_node_type) 
     new_node_data_json = json.loads(new_pdfs_node.new_node_data)
     data_model = NetworkMapper.node[core_node_type](**new_node_data_json)

@@ -22,15 +22,6 @@ class Credential():
 Core Graph Data Structures
 '''
 
-class AccessKey(BaseModel):
-    access_key: str
-    encryption_key: str
-
-
-class EncryptionKeys(BaseModel):
-    access_key: AccessKey
-    encryption_key: str
-
 
 class Edge(BaseModel):
     type: Optional[str]
@@ -49,17 +40,18 @@ class BinaryDataManifest(BaseModel):
     required: bool = False
 
 
-
-
 '''
 Nodes and Edges
 '''
 
 class N_TreatmentInstance_I(PDFSNode):
     type = "N_TreatmentInstance_I"
+    date: str = ""
     messages: List[str] = []
     media: Optional[str] = None
 
+    def init_instance(self, instanceType: str):
+        self.type = "N_TreatmentInstance_" + instanceType
 
 class N_TreatmentBinary(PDFSNode):
     type = "N_TreatmentBinary"
@@ -76,6 +68,7 @@ class N_Treatment_I(PDFSNode):
 
     is_active: bool = True
     active_on: str = ""
+
 
     edges: dict[str, Optional[Edge]] = {
         "e_out_TreatmentBinary": None
@@ -112,9 +105,14 @@ class N_AccessPackage(PDFSNode):
     key: str
 
 
+class Message(BaseModel):
+    sender: str
+    message: str
+
+
 class N_Inbox(PDFSNode):
     type = "N_Inbox"
-    unread_messages: List[str] = []
+    unread_messages: List[Message] = []
 
 
 class N_UserAccount(PDFSNode):
@@ -165,8 +163,10 @@ class NetworkMapperClass(BaseModel):
         "N_DataManifest": N_DataManifest,
         "N_DataGroup_I": N_DataGroup_I,
 
+
         "N_TreatmentManifest": N_TreatmentManifest,
         "N_Treatment_I": N_Treatment_I,
+        "N_TreatmentInstance_I": N_TreatmentInstance_I,
         "N_TreatmentBinary": N_TreatmentBinary,
     }
 
