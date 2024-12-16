@@ -40,14 +40,24 @@ class BinaryDataManifest(BaseModel):
     required: bool = False
 
 
+
+class Message(BaseModel):
+    sentOn: str
+    sender: str
+    message: str
+
+
 '''
 Nodes and Edges
 '''
+class N_TreatmentProgress(PDFSNode):
+    type = "N_TreatmentProgress"
+
 
 class N_TreatmentInstance_I(PDFSNode):
     type = "N_TreatmentInstance_I"
     date: str = ""
-    messages: List[str] = []
+    messages: List[Message] = []
     media: Optional[str] = None
 
     def init_instance(self, instanceType: str):
@@ -59,7 +69,7 @@ class N_TreatmentBinary(PDFSNode):
     detail: str = "Tracks your weight and gives updates on progress towards your weight goal."
     data_manifest: dict[str, BinaryDataManifest] = { }
     frequency: str = ""
-    execution_binaries: dict[str, str] = { }
+    execution_binary: str = "" 
 
 
 class N_Treatment_I(PDFSNode):
@@ -104,10 +114,6 @@ class N_AccessPackage(PDFSNode):
     type = "N_AccessPackage"
     key: str
 
-
-class Message(BaseModel):
-    sender: str
-    message: str
 
 
 class N_Inbox(PDFSNode):

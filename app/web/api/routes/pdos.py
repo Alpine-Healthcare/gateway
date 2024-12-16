@@ -93,9 +93,17 @@ TBD
 @router.get("/pdos")
 def get_node_from_pdos(
     hash: str,
+    return_raw: Optional[bool] = False
 ):
     assert hash is not None, "No hash id passed"
-    return get_node_from_pdfs(hash).json()
+    print("return raw", type(return_raw))
+
+    fetched_node = get_node_from_pdfs(hash, return_raw)
+
+    if return_raw:
+        return fetched_node
+
+    return fetched_node.json()
 
 class NewPDFSNodeRequest(BaseModel):
     new_node_type: Optional[str] = None

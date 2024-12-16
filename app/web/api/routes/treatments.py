@@ -9,7 +9,7 @@ from datetime import datetime
 
 router = APIRouter()
 
-TREATMENTS_FOLDER = "../therapies/"
+TREATMENTS_FOLDER = "../treatments/"
 
 @router.get("/therapies")
 def available_therapies() -> List[str]:

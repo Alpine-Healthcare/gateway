@@ -125,10 +125,14 @@ def add_node_to_pdfs(node: PDFSNode) -> PDFSNode:
     return node
 
 
-def get_node_from_pdfs(hash_id: str):
+def get_node_from_pdfs(hash_id: str, return_raw: bool = False):
     from app.web.api.routes.pdos import get_core_node_type
 
-    node = ipfs.get(hash_id)
+    node = ipfs.get(hash_id, return_raw)
+
+    if (return_raw):
+        return node
+
     node["hash_id"] = hash_id
     try:
         core_type = get_core_node_type(node["type"])

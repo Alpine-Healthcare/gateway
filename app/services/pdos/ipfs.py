@@ -91,7 +91,10 @@ def add(node_json: str):
     return parsed_response["Hash"]
 
 
-def get(hash_id):
+def get(hash_id: str, return_raw: bool = False):
     url = f"{settings.ipfs_url}/api/v0/cat?arg=/ipfs/{hash_id}"
     response = requests.post(url)
+    if return_raw:
+        return response.text
+
     return response.json() 
