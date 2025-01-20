@@ -1,7 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel, Field 
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Dict, List, Optional
 from webauthn.helpers.structs import AuthenticatorTransport
 import base64
 
@@ -63,6 +63,12 @@ class N_TreatmentInstance_I(PDFSNode):
     def init_instance(self, instanceType: str):
         self.type = "N_TreatmentInstance_" + instanceType
 
+
+class TreatmentIntake(BaseModel):
+    type: str
+    title: str
+    value: Optional[str | int]
+
 class N_TreatmentBinary(PDFSNode):
     type = "N_TreatmentBinary"
     name: str = "2 Weight Watcher"
@@ -70,7 +76,7 @@ class N_TreatmentBinary(PDFSNode):
     data_manifest: dict[str, BinaryDataManifest] = { }
     frequency: str = ""
     execution_binary: str = "" 
-
+    intake: Dict[str, TreatmentIntake]
 
 class N_Treatment_I(PDFSNode):
     type = "N_Treatment_"
@@ -78,6 +84,7 @@ class N_Treatment_I(PDFSNode):
 
     is_active: bool = True
     active_on: str = ""
+    intake: Optional[Dict[str, TreatmentIntake]]
 
 
     edges: dict[str, Optional[Edge]] = {

@@ -206,7 +206,7 @@
         console.log("registrationOptionsParsed", registrationOptionsParsed)
         const regResp = await SimpleWebAuthnBrowser.startRegistration(registrationOptionsParsed);
 
-        setMessage('Registration in progess, adding user to ipfs', true)
+        setMessage('Registration in progess, adding user to network', true)
         const verificationResp = await fetch(
           serverUrl + '/auth/register/verify',
           {
