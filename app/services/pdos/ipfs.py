@@ -75,8 +75,6 @@ def update_alpine_node_manifest(new_alpine_node: AlpineNodeManifest):
     set_new_alpine_manifest(new_alpine_node)
     ALPINE_NODE_MANIFEST = new_alpine_node
 
-    logger.info(f"Updated Alpine Node Manifest: {ALPINE_NODE_MANIFEST} ")
-
 
 def add(node_json: str):
     bytes = str.encode(node_json)

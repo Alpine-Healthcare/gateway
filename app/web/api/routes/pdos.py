@@ -96,7 +96,6 @@ def get_node_from_pdos(
     return_raw: Optional[bool] = False
 ):
     assert hash is not None, "No hash id passed"
-    print("return raw", type(return_raw))
 
     fetched_node = get_node_from_pdfs(hash, return_raw)
 
@@ -159,7 +158,6 @@ generating a new tree root.
 def add_node_to_pdos(
     new_pdfs_node: NewPDFSNodeRequest
 ) -> NewPDFSNodeResponse:
-    print("new_pdfs_node: ",new_pdfs_node)
     core_node_type = get_core_node_type(new_pdfs_node.new_node_type) 
     new_node_data_json = json.loads(new_pdfs_node.new_node_data)
     data_model = NetworkMapper.node[core_node_type](**new_node_data_json)
@@ -215,8 +213,11 @@ def add_node_to_pdos(
     if len(new_pdfs_node.tree_path) > 0:
         update_parent_nodes(new_pdfs_node.tree_path, newly_added_pdfs_node)
 
-    return NewPDFSNodeResponse[NetworkMapper.node[core_node_type]](
+    response = NewPDFSNodeResponse[NetworkMapper.node[core_node_type]](
         new_node=newly_added_pdfs_node,
         new_tree_path = list(reversed(new_tree_path)),
         old_tree_path = new_pdfs_node.tree_path
     )
+
+    print("response: ", response)
+    return response

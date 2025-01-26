@@ -77,6 +77,7 @@ Higher Level Operations
 def add_user_to_network(
     user_id: str,
     credential: Credential,
+    is_wallet: bool = False
 ) -> N_UserAccount:
 
     new_user = registering_user_map[user_id].get("user")
@@ -96,15 +97,17 @@ def add_user_to_network(
     user = add_node_to_pdfs(new_user)
     logger.info(f"Added user to network: {user_credential_id}")
 
-    alpine = ipfs.ALPINE_NODE_MANIFEST 
-    updated_alpine = alpine.copy()
+    if not is_wallet:
+        alpine = ipfs.ALPINE_NODE_MANIFEST 
+        updated_alpine = alpine.copy()
 
-    updated_alpine.users[user_credential_id] = {
-        "hash_id": user.hash_id,
-        "timestamp": datetime.now().timestamp()
-    }
+        updated_alpine.users[user_credential_id] = {
+            "hash_id": user.hash_id,
+            "timestamp": datetime.now().timestamp()
+        }
 
-    ipfs.update_alpine_node_manifest(updated_alpine)
+        ipfs.update_alpine_node_manifest(updated_alpine)
+
     return user
 
 
@@ -121,7 +124,7 @@ def add_node_to_pdfs(node: PDFSNode) -> PDFSNode:
     hash = ipfs.add(json.dumps(node_json))
 
     node.hash_id = hash
-    logger.info(f"Successfully added node to IPFS: {hash} of type {node.type}")
+    logger.info(f"Successfully added node to PDOS: {hash} of type {node.type}")
     return node
 
 

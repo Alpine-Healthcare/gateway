@@ -18,7 +18,6 @@ def available_therapies() -> List[str]:
     try:
         # List all files in the JSON_FOLDER
         for filename in os.listdir(TREATMENTS_FOLDER):
-            print("filename: , ", filename)
             if filename.endswith(".json"):
                 file_path = os.path.join(TREATMENTS_FOLDER, filename)
                 
@@ -30,6 +29,4 @@ def available_therapies() -> List[str]:
         print("e: ", e)
         raise HTTPException(status_code=500, detail=str(e))
 
-    print("available_treatments: ", type(available_treatments))
-    
     return JSONResponse(content=available_treatments) 
