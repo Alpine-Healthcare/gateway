@@ -1,0 +1,17 @@
+{
+    "hash_id": "QmVifvqEWJkwHBA9YkFo1o8DcKa9e5CL1q8CbJ11nxMbDq",
+    "type": "N_TreatmentBinary",
+    "name": "Movement",
+    "group": "Activity",
+    "detail": "Make sures you are in the optimal range of movement",
+    "frequency": "0 0 * * *",
+    "data_manifest": {
+        "step_count": {
+            "required": false
+        },
+        "body_mass": {
+            "required": true
+        }
+    },
+    "execution_binaries": {}
+}

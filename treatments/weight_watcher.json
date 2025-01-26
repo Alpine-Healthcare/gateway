@@ -1,0 +1,47 @@
+{
+    "hash_id": "QmeFC86hWxLE2tC7riwZfe7T7B6mzRye6xR8hhXiAxmUAB",
+    "type": "N_TreatmentBinary",
+    "name": "Weight Watcher",
+    "group": "Weight",
+    "detail": "Tracks your weight and gives updates on progress towards your weight goal.",
+    "frequency": "0 0 * * *",
+    "data_manifest": {
+        "step_count": {
+            "required": false
+        },
+        "body_mass": {
+            "required": true
+        },
+        "dietary_energy_consumed": {
+            "required": false
+        },
+        "body_fat_percentage": {
+            "required": true
+        },
+        "basal_energy_burned": {
+            "required": false
+        },
+        "active_energy_burned": {
+            "required": false
+        },
+        "apple_exercise_time": {
+            "required": false
+        },
+        "dietary_protein": {
+            "required": false
+        }
+    },
+    "execution_binary": "QmVo4fa1JZQ8u5BHrFcZJayAcb63LSRAgyQe4kEh6zJRAP",
+    "intake": {
+        "target_weight":{
+            "type": "number",
+            "title": "Target Weight",
+            "value": null
+        },
+        "target_body_fat":{
+            "type": "number",
+            "title": "Target Body Fat Percentage",
+            "value": null
+        }
+    }
+} 

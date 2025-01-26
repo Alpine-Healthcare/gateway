@@ -1,0 +1,10 @@
+{
+    "hash_id": "QmRXJ6g3q7xuTDFBFgojmm8QEoheqQ1tMRige8sgFoTyt3",
+    "type": "N_TreatmentBinary",
+    "name": "Marathon Coach",
+    "group": "Running",
+    "detail": "Helps you train for a marathon by tracking your runs and giving you a training plan.",
+    "data_manifest": {},
+    "frequency": "0 0 * * *",
+    "execution_binaries": {}
+} 

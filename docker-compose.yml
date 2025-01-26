@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
       target: prod
-    image: basecamp 
+    image: gateway 
     restart: always
     depends_on:
       - ipfs
