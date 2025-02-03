@@ -158,6 +158,7 @@ generating a new tree root.
 def add_node_to_pdos(
     new_pdfs_node: NewPDFSNodeRequest
 ) -> NewPDFSNodeResponse:
+    print("new pdfs node: ", new_pdfs_node)
     core_node_type = get_core_node_type(new_pdfs_node.new_node_type) 
     new_node_data_json = json.loads(new_pdfs_node.new_node_data)
     data_model = NetworkMapper.node[core_node_type](**new_node_data_json)
@@ -187,12 +188,15 @@ def add_node_to_pdos(
             child_hash_id=new_node.hash_id
         ) 
 
+        print("addign node to pdfs: ", updated_parent_node)
         new_parent_node = add_node_to_pdfs(
             updated_parent_node,
         )
 
         new_tree_path.append(new_parent_node.hash_id)
-        if parent_node.is_root:
+        print("parent_node: ", parent_node)
+        if hasattr(parent_node, "is_root") and parent_node.is_root:
+            print("its a root")
             if (parent_node.type == "N_UserAccount"):
                 alpine = ipfs.ALPINE_NODE_MANIFEST 
                 updated_alpine = alpine.copy()

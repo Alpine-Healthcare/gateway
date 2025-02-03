@@ -31,8 +31,8 @@ class Edge(BaseModel):
 class PDFSNode(BaseModel):
     type: Optional[str]
     hash_id: Optional[str]
-    is_root: Optional[bool] = False
     edges: Optional[dict[str, Optional[Edge]]]
+    data: Optional[str] = None
 
 
 
@@ -56,6 +56,8 @@ class N_TreatmentProgress(PDFSNode):
 
 class N_TreatmentInstance_I(PDFSNode):
     type = "N_TreatmentInstance_I"
+
+    #Encrypt
     date: str = ""
     messages: List[Message] = []
     media: Optional[str] = None
@@ -71,8 +73,10 @@ class TreatmentIntake(BaseModel):
 
 class N_TreatmentBinary(PDFSNode):
     type = "N_TreatmentBinary"
-    name: str = "2 Weight Watcher"
-    detail: str = "Tracks your weight and gives updates on progress towards your weight goal."
+
+    #Encrypt
+    name: str = ""
+    detail: str = ""
     data_manifest: dict[str, BinaryDataManifest] = { }
     frequency: str = ""
     execution_binary: str = "" 
@@ -80,30 +84,28 @@ class N_TreatmentBinary(PDFSNode):
 
 class N_Treatment_I(PDFSNode):
     type = "N_Treatment_"
-    treatment : str = ""
-
-    is_active: bool = True
-    active_on: str = ""
-    intake: Optional[Dict[str, TreatmentIntake]]
-
-
     edges: dict[str, Optional[Edge]] = {
         "e_out_TreatmentBinary": None
     }
 
+    #Encrypt
+    #is_active: bool = True
+    #active_on: str = ""
+    #intake: Optional[Dict[str, TreatmentIntake]]
+
     def init_instance(self, instanceType: str):
-        self.treatment = instanceType
         self.type = "N_Treatment_" + instanceType
 
 
 class N_DataGroup_I(PDFSNode):
     type = "N_DataGroup_"
+
+    #Encrypt
     metric: str = ''
     edges: dict[str, Optional[Edge]] = {}
     records: dict[str, float]
 
     def init_instance(self, instanceType: str):
-        self.type = instanceType
         self.type = "N_DataGroup_" + instanceType
 
 
@@ -125,6 +127,8 @@ class N_AccessPackage(PDFSNode):
 
 class N_Inbox(PDFSNode):
     type = "N_Inbox"
+
+    #Encrypt
     unread_messages: List[Message] = []
 
 
@@ -132,16 +136,16 @@ class N_UserAccount(PDFSNode):
     type = "N_UserAccount"
     is_root = True
 
-    expoPushNotificationToken: Optional[str] = None
-
-    credentials: List[Credential] 
-
     edges: dict[str, Optional[Edge]] = {
         "e_out_AccessPackage": None,
         "e_out_TreatmentManifest": None,
         "e_out_DataManifest": None,
         "e_out_Inbox": None,
     }
+
+    #Encrypt
+    expoPushNotificationToken: Optional[str] = None
+    credentials: List[Credential] 
 
     def __init__(self, *a, **kw):
         super().__init__(*a, **kw)
