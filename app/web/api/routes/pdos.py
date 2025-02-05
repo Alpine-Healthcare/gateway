@@ -198,6 +198,8 @@ def add_node_to_pdos(
         if hasattr(parent_node, "is_root") and parent_node.is_root:
             print("its a root")
             if (parent_node.type == "N_UserAccount"):
+                pass
+                '''
                 alpine = ipfs.ALPINE_NODE_MANIFEST 
                 updated_alpine = alpine.copy()
                 userAccount = N_UserAccount(**parent_node.dict())
@@ -210,6 +212,7 @@ def add_node_to_pdos(
                     "timestamp": datetime.now().timestamp()
                 }
                 ipfs.update_alpine_node_manifest(updated_alpine)
+                '''
         else:
             update_parent_nodes(parent_node_hash_list, new_parent_node)
 

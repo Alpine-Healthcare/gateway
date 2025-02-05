@@ -44,24 +44,8 @@ Wallet User Registration
 @router.post("/auth/register-wallet-user")
 def register_wallet_user(body: Dict[Any, Any]):
     public_key= body["publicKey"]
-    new_user = N_UserAccount(
-        id=public_key,
-        username=public_key,
-        credentials=[],
-    )
-
     store_potential_user_and_challenge(public_key, public_key, "")
-
-    new_credential = Credential(
-        id=public_key,
-        public_key=public_key,
-        sign_count=0,
-        transports=[],
-    )
-
-    return add_user_to_network(public_key, new_credential)
-
-
+    return add_user_to_network(public_key)
 
 
 '''

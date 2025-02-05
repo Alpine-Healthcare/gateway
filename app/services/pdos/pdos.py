@@ -1,6 +1,6 @@
 from datetime import datetime
 import json
-from app.services.pdos.model import Credential, Edge, N_AccessPackage, N_UserAccount, NetworkMapper, PDFSNode 
+from app.services.pdos.model import Credential, Edge, N_UserAccount, NetworkMapper, PDFSNode 
 from app.services.pdos import ipfs
 from app.web.application import logger
 from base64 import urlsafe_b64encode
@@ -26,7 +26,6 @@ def store_potential_user_and_challenge(
     new_user = N_UserAccount(
         id=user_id,
         username=username,
-        credentials=[],
     )
 
     registering_user_map[username] = {
@@ -76,32 +75,19 @@ Higher Level Operations
 '''
 def add_user_to_network(
     user_id: str,
-    credential: Credential,
     is_wallet: bool = False
 ) -> N_UserAccount:
 
     new_user = registering_user_map[user_id].get("user")
-    new_user.credentials.append(credential)
-    user_credential_id = credential.id
-
-    new_access_package = N_AccessPackage(key="default")
-    access_package = add_node_to_pdfs(new_access_package)
-
-    access_package_edge= Edge(
-        child_hash_id=access_package.hash_id,
-        type="N_AccessPackage"
-    )
-
-    new_user.edges["e_out_AccessPackage"] = access_package_edge
 
     user = add_node_to_pdfs(new_user)
-    logger.info(f"Added user to network: {user_credential_id}")
+    logger.info(f"Added user to network: {user_id}")
 
     if not is_wallet:
         alpine = ipfs.ALPINE_NODE_MANIFEST 
         updated_alpine = alpine.copy()
 
-        updated_alpine.users[user_credential_id] = {
+        updated_alpine.users[user_id] = {
             "hash_id": user.hash_id,
             "timestamp": datetime.now().timestamp()
         }

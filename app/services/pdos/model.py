@@ -119,10 +119,6 @@ class N_TreatmentManifest(PDFSNode):
     edges: dict[str, Optional[Edge]] = {}
 
 
-class N_AccessPackage(PDFSNode):
-    type = "N_AccessPackage"
-    key: str
-
 
 
 class N_Inbox(PDFSNode):
@@ -132,20 +128,21 @@ class N_Inbox(PDFSNode):
     unread_messages: List[Message] = []
 
 
+class AccessPackage(BaseModel):
+    ciphertext: str
+    dataToEncryptHash: str
+
 class N_UserAccount(PDFSNode):
     type = "N_UserAccount"
     is_root = True
 
     edges: dict[str, Optional[Edge]] = {
-        "e_out_AccessPackage": None,
         "e_out_TreatmentManifest": None,
         "e_out_DataManifest": None,
         "e_out_Inbox": None,
     }
 
-    #Encrypt
-    expoPushNotificationToken: Optional[str] = None
-    credentials: List[Credential] 
+    access_package: Optional[AccessPackage] = None
 
     def __init__(self, *a, **kw):
         super().__init__(*a, **kw)
@@ -174,7 +171,6 @@ class NetworkMapperClass(BaseModel):
     node ={
         "N_Inbox": N_Inbox,
 
-        "N_AccessPackage": N_AccessPackage,
         "N_UserAccount": N_UserAccount,
 
         "N_DataManifest": N_DataManifest,
