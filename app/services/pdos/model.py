@@ -88,22 +88,13 @@ class N_Treatment_I(PDFSNode):
         "e_out_TreatmentBinary": None
     }
 
-    #Encrypt
-    #is_active: bool = True
-    #active_on: str = ""
-    #intake: Optional[Dict[str, TreatmentIntake]]
-
     def init_instance(self, instanceType: str):
         self.type = "N_Treatment_" + instanceType
 
 
 class N_DataGroup_I(PDFSNode):
     type = "N_DataGroup_"
-
-    #Encrypt
-    metric: str = ''
     edges: dict[str, Optional[Edge]] = {}
-    records: dict[str, float]
 
     def init_instance(self, instanceType: str):
         self.type = "N_DataGroup_" + instanceType
@@ -125,7 +116,7 @@ class N_Inbox(PDFSNode):
     type = "N_Inbox"
 
     #Encrypt
-    unread_messages: List[Message] = []
+    #unread_messages: List[Message] = []
 
 
 class AccessPackage(BaseModel):
