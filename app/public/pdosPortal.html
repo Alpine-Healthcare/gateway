@@ -19,7 +19,7 @@
     window.process = { env: { NODE_ENV: 'production' } };
   </script>
 
-  <script src="http://localhost:3000/index.umd.js"></script>
+  <script src="https://network.alpine.healthcare/index.umd.js"></script>
 
 
   <meta property="og:title" content="Alpine" />
@@ -194,23 +194,18 @@
   <script type="module">
     import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
 
-    
     let Core;
     let pdos;
     let actions;
 
     const receivedPortalMessages = {}
-    let privateKey = "d43d8f66f0fce15a8c02203af736f4da9f100f56463ffe9bb1bcc0e2b0e40b76";
-    let publicKey = "0xCbc11E534077a181476c7a5c511a5ffb4c17dB65"
 
     const injectedData = {
-      PRIVATE_KEY: "",
       PUBLIC_KEY: undefined,
       ACCESS_PACKAGE: undefined
     }
 
     function emit(type, prop, data) {
-
       if (window.ReactNativeWebView) {
         window.ReactNativeWebView.postMessage(JSON.stringify({
           type,
@@ -229,14 +224,12 @@
 
     window.addEventListener("rn-web-bridge", async function(event) {
       switch (window.message) {
-        case 'injectPrivateKey':
-          injectedData.PRIVATE_KEY = window.data;
-          break;
         case 'injectPublicKey':
           injectedData.PUBLIC_KEY = window.data;
           break;
         case 'loadCore':
           updateButtonTitle("Starting PDOS")
+          injectedData.PUBLIC_KEY = window.data;
           await createCore();
           break;
         case 'generateAccessPackage':
@@ -254,17 +247,14 @@
           } catch (e) {
             emit("error", "error setting access package" + JSON.stringify(e));
           }
-          //emit( "generateAccessPackage", accessPackage);
           break;
         default:
-          emit("random", "got type" + window.message);
+          emit("random", "got type" + window.message, window.data);
           break;
       }
 
     
-      emit("random", "saving");
       receivedPortalMessages[window.message] = JSON.parse(window.data)
-      emit("random", "set received portal messages", receivedPortalMessages);
 
       window.message = null;
       window.data = null;
@@ -275,13 +265,10 @@
     window.generateAccessPackage = async function generateAccessPackage() {
       const accessPackage = await pdos().modules.encryption.generateAccessPackage()
       injectedData.ACCESS_PACKAGE = accessPackage;
-      console.log("accessPackage: ", accessPackage);
     }
 
     window.setAccessPackage = async function setAccessPackage() {
-
       const decryptedAccessPackage = await pdos().modules.encryption.setAccessPackage(injectedData.ACCESS_PACKAGE);
-      console.log("decryptedAccessPackage: ", decryptedAccessPackage);
     }
 
 
@@ -306,16 +293,10 @@
         new Core({
           env: "marigold",
           context: {
-            gatewayURL: "http://localhost:8000"
+            gatewayURL: "https://network.alpine.healthcare/api"
           },
           modules: {
-            auth: {
-              jsonRpcProvider: new ethers.JsonRpcProvider("https://base-sepolia.g.alchemy.com/v2/kweWDvWBDTWDp3wK3XjzRVgEU10sBjr6", {
-                name: 'base-sepolia',
-                chainId: 84532
-              }),
-              privateKey: injectedData.PRIVATE_KEY 
-            },
+            auth: {},
             encryption: {
               enabled: true,
               portal: 'remote'
@@ -326,9 +307,9 @@
         emit( "state", "coreStarted" );
 
         await pdos().start()
-        pdos().modules.auth.setPublicKey(injectedData.PUBLIC_KEY ?? publicKey);
+        pdos().modules.auth.setPublicKey(injectedData.PUBLIC_KEY);
         await pdos().modules?.encryption?.setPortalSend((type, prop, data) => {
-          emit('random', 'got an emit from pdos')
+          emit('random', 'got an emit from pdos', type + prop + data)
           emit(type, prop, data)
         })
         await pdos().modules?.encryption?.setPortalReceive((type) => {
