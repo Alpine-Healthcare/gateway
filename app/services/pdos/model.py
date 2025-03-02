@@ -76,7 +76,10 @@ class N_TreatmentBinary(PDFSNode):
 
     #Encrypt
     name: str = ""
+    owner: str = ""
+    group: str = ""
     detail: str = ""
+    description: str = ""
     data_manifest: dict[str, BinaryDataManifest] = { }
     frequency: str = ""
     execution_binary: str = "" 

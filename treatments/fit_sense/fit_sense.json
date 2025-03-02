@@ -1,9 +1,9 @@
 {
-    "hash_id": "QmeFC86hWxLE2tC7riwZfe7T7B6mzRye6xR8hhXiAxmUAB",
     "type": "N_TreatmentBinary",
-    "name": "Weight Watcher",
+    "name": "FitSense",
     "group": "Lifestyle",
-    "detail": "Tracks your weight and gives updates on progress towards your weight goal.",
+    "description": "FitSense is your intelligent companion for lasting weight loss. By tracking key metrics like weight, activity, calories burned, and dietary protein, FitSense provides personalized guidance and real-time feedback. Make weight loss a seamless and intuitive part of your daily life with FitSense.",
+    "detail": "Tracks key metrics to guide your weight loss journey effortlessly.",
     "owner": "0xe4d172EE62f88Ba29D051D60620fEBB308B81F4E",
     "frequency": "0 0 * * *",
     "data_manifest": {
@@ -32,7 +32,7 @@
             "required": false
         }
     },
-    "execution_binary": "QmVo4fa1JZQ8u5BHrFcZJayAcb63LSRAgyQe4kEh6zJRAP",
+    "execution_binary": "QmSgE7W334qZAKu3CbuJDstysMAiUM9eJKdArAbG1XwMVP",
     "intake": {
         "target_weight":{
             "type": "number",
