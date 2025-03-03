@@ -89,6 +89,15 @@ def add(node_json: str):
     return parsed_response["Hash"]
 
 
+def add_bytes(blob: bytes):
+    url = f"{settings.ipfs_url}/api/v0/add"
+    response = requests.post(url, files={"file": blob})
+
+    if response.status_code != 200:
+        logger.error(f"Failed getting alpine node {response.status_code}")
+        raise Exception("Failed to add node to IPFS")
+
+
 def get(hash_id: str, return_raw: bool = False):
     url = f"{settings.ipfs_url}/api/v0/cat?arg=/ipfs/{hash_id}"
     response = requests.post(url)

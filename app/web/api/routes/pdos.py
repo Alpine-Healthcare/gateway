@@ -231,14 +231,14 @@ def add_node_to_pdos(
 
 
 class BlobRequest(BaseModel):
-    imageBase64: str
+    blob: bytes
 
 @router.post("/pdos/blob")
 async def add_blob_to_pdos(
     request: BlobRequest,
 ):
     try:
-        hash = ipfs.add(request.imageBase64)
+        hash = ipfs.add_bytes(request.blob)
         return hash
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
