@@ -240,3 +240,14 @@ async def add_blob_to_pdos(
         return hash
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+
+
+@router.get("/pdos/blob")
+async def get_blob_from_pdos(
+    hash: str,
+):
+    try:
+        content = ipfs.get(hash)
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get file: {str(e)}")
