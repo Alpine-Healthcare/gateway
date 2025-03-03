@@ -13,7 +13,7 @@ class Edge(BaseModel):
 
 class PDOSNode(BaseModel):
     type: Optional[str]
-    hash_id: Optional[str]
+    hash_id: Optional[str] = None
     edges: Optional[dict[str, Optional[Edge]]] = None
     data: Optional[str] = None
 

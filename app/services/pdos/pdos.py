@@ -62,6 +62,7 @@ Core Operations
 '''
 
 def add_node_to_pdfs(node: PDOSNode) -> PDOSNode:
+    print("node: ", node)
     node_json = json.loads(node.json())
     node_json.pop("hash_id ", None)
 
