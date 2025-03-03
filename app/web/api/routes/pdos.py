@@ -236,7 +236,13 @@ async def add_blob_to_pdos(
 ):
     try:
         content = await file.read()
-        hash = ipfs.add(content)
+        # Convert bytes to base64 string if needed for IPFS
+        if isinstance(content, bytes):
+            # Safely handle binary data
+            hash = ipfs.add(content)
+        else:
+            # Fall back to string handling
+            hash = ipfs.add(str(content))
         return hash
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
