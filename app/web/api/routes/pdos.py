@@ -9,6 +9,8 @@ from app.services.pdos import ipfs
 from typing import Generic, TypeVar
 from pydantic.generics import GenericModel
 import threading
+from fastapi.responses import StreamingResponse
+from io import BytesIO
 
 
 router = APIRouter()
@@ -249,7 +251,10 @@ async def get_blob_from_pdos(
     hash: str,
 ):
     try:
-        content = ipfs.get(hash)
-        return content
+        content = ipfs.get_bytes(hash)
+        return StreamingResponse(
+            BytesIO(content),
+            media_type="application/octet-stream"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get file: {str(e)}")
