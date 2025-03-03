@@ -252,9 +252,6 @@ async def get_blob_from_pdos(
 ):
     try:
         content = ipfs.get_bytes(hash)
-        return StreamingResponse(
-            BytesIO(content),
-            media_type="application/octet-stream"
-        )
+        return content
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get file: {str(e)}")
