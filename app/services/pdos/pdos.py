@@ -39,7 +39,10 @@ def send_user_test_tokens(public_key: str):
         "value": amount_in_wei,
         "to": public_key
     })
-    logger.info(f"Successfully sent test tokens to {public_key}")
+    # Wait for the transaction to be mined
+    tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash, timeout=120)
+    logger.info(f"Successfully sent test tokens to {public_key}. Transaction confirmed in block {tx_receipt.blockNumber}")
+    return tx_receipt
 
 
 def add_user_to_network(
