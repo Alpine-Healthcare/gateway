@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 from typing import List, Optional
-from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi import APIRouter, File, UploadFile, HTTPException, Response
 from app.services.pdos.pdos import get_node_from_pdfs, add_node_to_pdfs
 from app.services.pdos.model import Edge, N_UserAccount, NetworkMapper, PDFSNode
 from pydantic import BaseModel
@@ -246,12 +246,12 @@ async def add_blob_to_pdos(
         raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
 
 
-@router.get("/pdos/blob")
+@router.get("/pdos/image")
 async def get_blob_from_pdos(
     hash: str,
 ):
     try:
         content = ipfs.get_bytes(hash)
-        return content
+        return Response(content=content, media_type="image/jpeg")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get file: {str(e)}")

@@ -102,7 +102,7 @@ def add_bytes(blob: bytes):
 
 def get_bytes(hash_id: str):
     url = f"{settings.ipfs_url}/api/v0/cat?arg=/ipfs/{hash_id}"
-    response = requests.post(url)
+    response = requests.post(url, stream=True)
     response.raise_for_status()
 
     return response.content
