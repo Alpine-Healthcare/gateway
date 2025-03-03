@@ -123,9 +123,10 @@ class N_UserAccount(PDOSNode):
             if key == "__fields__":
                 expectedEdges = getattr(N_UserAccount, key)["edges"].default
 
-        for key in expectedEdges:
-            if key not in self.edges:
-                self.edges[key] = None
+        if expectedEdges is not None:
+            for key in expectedEdges:
+                if key not in self.edges:
+                    self.edges[key] = None
 
 class AlpineNodeManifestUser(BaseModel):
     hash_id: str
