@@ -15,21 +15,17 @@ python = "^3.9"
 fastapi = "^0.100.0"
 uvicorn = { version = "^0.22.0", extras = ["standard"] }
 gunicorn = "^21.2.0"
-pydantic = { version = "^1", extras=["dotenv"] }
+pydantic = { version = "2.10.6", extras=["dotenv"] }
 yarl = "^1.9.2"
 ujson = "^5.8.0"
-SQLAlchemy = {version = "^2.0.18", extras = ["asyncio"]}
 alembic = "^1.11.1"
-asyncpg = {version = "^0.28.0", extras = ["sa"]}
 aiofiles = "^23.1.0"
 httptools = "^0.6.0"
-strawberry-graphql = { version = "^0.194.4", extras = ["fastapi"] }
-pyroscope-io = "^0.8.7"
-openai = "^1.31.0"
-webauthn = "^2.1.0"
+web3 = "7.8.0"
 python-dotenv = "^1.0.1"
-gql = {extras = ["all"], version = "^3.5.0"}
 requests = "^2.32.3"
+pydantic-settings = "^2.8.1"
+eth-account = "^0.13.5"
 
 
 [tool.poetry.dev-dependencies]

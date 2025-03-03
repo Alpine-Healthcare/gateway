@@ -1,15 +1,11 @@
 import enum
-from pathlib import Path
-from tempfile import gettempdir
-
-from pydantic import BaseSettings
-from yarl import URL
-from dotenv import load_dotenv
 import os
+
+from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
 
 
 load_dotenv()
-TEMP_DIR = Path(gettempdir())
 
 
 class LogLevel(str, enum.Enum):  # noqa: WPS600
@@ -42,42 +38,21 @@ class Settings(BaseSettings):
     environment: str = os.environ.get("ENVIRONMENT", "development")
 
     log_level: LogLevel = LogLevel.INFO
-    # Variables for the database
-    db_host: str = "localhost"
-    db_port: int = 5432
-    db_user: str = "gateway"
-    db_pass: str = "gateway"
-    db_base: str = "gateway"
-    db_echo: bool = False
 
-    # OpenAI API key
-    open_api_key = os.environ.get("OPENAI_API_KEY")
-
-    # WebAuthn
-    rp_id = os.environ.get("RP_ID")
-    rp_name = os.environ.get("RP_NAME")
-    origin = os.environ.get("ORIGIN")
+    # WebAuthn (Passkeys)
+    rp_id: str = os.environ.get("RP_ID")
+    rp_name: str = os.environ.get("RP_NAME")
+    origin: str = os.environ.get("ORIGIN")
 
     #ipfs
-    ipfs_url = os.environ.get("IPFS_URL")
-    ipfs_ipns_id = os.environ.get("IPFS_IPNS_ID")
+    ipfs_url: str = os.environ.get("IPFS_URL")
+    ipfs_ipns_id: str = os.environ.get("IPFS_IPNS_ID")
 
+    #wallet
+    marigold_public_key: str = os.environ.get("MARIGOLD_PUBLIC_KEY")
+    marigold_private_key: str = os.environ.get("MARIGOLD_PRIVATE_KEY")
 
-    @property
-    def db_url(self) -> URL:
-        """
-        Assemble database URL from settings.
-
-        :return: database URL.
-        """
-        return URL.build(
-            scheme="postgresql+asyncpg",
-            host=self.db_host,
-            port=self.db_port,
-            user=self.db_user,
-            password=self.db_pass,
-            path=f"/{self.db_base}",
-        )
+    infura_url: str = os.environ.get("INFURA_URL")
 
     class Config:
         env_file = ".env"

@@ -1,88 +1,14 @@
-from datetime import datetime
 import json
 from typing import List, Optional
-from fastapi import APIRouter, File, UploadFile, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response
 from app.services.pdos.pdos import get_node_from_pdfs, add_node_to_pdfs
-from app.services.pdos.model import Edge, N_UserAccount, NetworkMapper, PDFSNode
+from app.services.pdos.model import Edge, NetworkMapper, PDOSNode
 from pydantic import BaseModel
+from pydantic.generics import GenericModel
 from app.services.pdos import ipfs
 from typing import Generic, TypeVar
-from pydantic.generics import GenericModel
-import threading
-from fastapi.responses import StreamingResponse
-from io import BytesIO
-
 
 router = APIRouter()
-
-'''
-PDOS Mutex Routes
-
-TBD
-
-'''
-
-user_mutexes = {}
-
-@router.get("/pdos/users")
-def get_pdos_users():
-    return ipfs.ALPINE_NODE_MANIFEST.users
-
-
-@router.get("/pdos/users/{credential_id}")
-def get_pdos_users(
-    credential_id: str,
-):
-    if credential_id in ipfs.ALPINE_NODE_MANIFEST.users:
-        return [ credential_id, ipfs.ALPINE_NODE_MANIFEST.users[credential_id]]
-    else:
-        return None
-
-
-@router.get("/pdos/mutex")
-def get_pdos_mutex(
-    credential_id: str,
-):
-    if credential_id in user_mutexes:
-        mutexInfo = user_mutexes[credential_id]
-        if mutexInfo["mutex"].locked():
-            return {
-                "acquired": False,
-                "timestamp": mutexInfo["timestamp"]
-            } 
-        else:
-            mutexInfo["mutex"].acquire()
-            mutexInfo["timestamp"] = datetime.now().isoformat()
-            return {
-                "acquired": True,
-                "timestamp": mutexInfo["timestamp"]
-            } 
-    else:
-        user_mutexes[credential_id] = {
-            "mutex": threading.Lock(),
-            "timestamp": datetime.now().isoformat()
-        }
-        user_mutexes[credential_id]["mutex"].acquire()
-        return {
-            "acquired": True,
-            "timestamp": user_mutexes[credential_id]["timestamp"]
-        } 
-
-
-@router.get("/pdos/mutex/release")
-def release_pdos_mutex(
-    credential_id: str,
-) -> bool:
-    if credential_id not in user_mutexes:
-        return False
-    else:
-        mutexInfo = user_mutexes[credential_id]
-        if mutexInfo["mutex"].locked():
-            mutexInfo["mutex"].release()
-            return True
-        else:
-            return False
-
 
 '''
 PDOS Tree Routes

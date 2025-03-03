@@ -2,13 +2,6 @@ import uvicorn
 
 from app.gunicorn_runner import GunicornApplication
 from app.settings import settings
-import pyroscope
-import ssl
-
-pyroscope.configure(
-  application_name = "com.alpine.gateway", # replace this with some name for your application
-  server_address   = "http://my-pyroscope-server:4040", # replace this with the address of your Pyroscope server
-)
 
 def main() -> None:
 

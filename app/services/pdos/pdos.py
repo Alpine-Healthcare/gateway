@@ -1,9 +1,24 @@
-from datetime import datetime
 import json
-from app.services.pdos.model import Credential, Edge, N_UserAccount, NetworkMapper, PDFSNode 
+from app.services.pdos.model import N_UserAccount, NetworkMapper, PDOSNode 
 from app.services.pdos import ipfs
 from app.web.application import logger
 from base64 import urlsafe_b64encode
+from app.settings import settings
+from web3 import Web3
+import web3
+
+
+from eth_account import Account
+from eth_account.signers.local import LocalAccount
+from web3.middleware import SignAndSendRawMiddlewareBuilder
+
+w3 = Web3(Web3.HTTPProvider(settings.infura_url))
+account: LocalAccount = Account.from_key(settings.marigold_private_key)
+w3.middleware_onion.inject(SignAndSendRawMiddlewareBuilder.build(account), layer=0)
+
+import logging
+
+logger = logging.getLogger("Gateway")
 
 
 def bytes_to_base64url(val: bytes) -> str:
@@ -12,87 +27,32 @@ def bytes_to_base64url(val: bytes) -> str:
     """
     return urlsafe_b64encode(val).decode("utf-8").rstrip("=")
 
-'''
-User Registration Util Functions
-'''
-registering_user_map = {}
-validating_user_map = {}
-
-def store_potential_user_and_challenge(
-    user_id: str,
-    username: str,
-    challenge: str
-):
-    new_user = N_UserAccount(
-        id=user_id,
-        username=username,
-    )
-
-    registering_user_map[username] = {
-        "user": new_user,
-        "challenge": challenge
-    }
-
-
-def get_registering_user_challenge(user_id) -> N_UserAccount:
-    return registering_user_map[user_id].get("user"), registering_user_map[user_id].get("challenge")     
-
-
-def store_user_challenge(
-    verification_id: str,
-    challenge: str
-):
-    validating_user_map[verification_id] = challenge
-
-
-def get_user_challenge(
-    verification_id: str,
-):
-    return validating_user_map[verification_id]
-
-
-def get_user_by_credential_id(
-    credential_id: str
-):
-    if credential_id in ipfs.ALPINE_NODE_MANIFEST.users:
-        user_info = ipfs.ALPINE_NODE_MANIFEST.users[credential_id]
-        user_node = get_node_from_pdfs(user_info["hash_id"]) 
-        return user_node
-    else:
-        raise RuntimeError(f"User not found {credential_id}")
-
-
-def get_access_package_in_json_format(
-    user: N_UserAccount
-) -> str:
-    #return get_node_from_pdfs(user.edges["e_out_access_package"].child_hash_id, "N_AccessPackage").json()
-    ret = '{ "hashId":' + user.hash_id + '}'
-    return user.credentials[0].id
-
 
 '''
-Higher Level Operations
+User Init Operations
 '''
+
+def send_user_test_tokens(public_key: str):
+    amount_in_wei = Web3.to_wei(0.001, 'ether')
+    tx_hash = w3.eth.send_transaction({
+        "from": account.address,
+        "value": amount_in_wei,
+        "to": public_key
+    })
+    logger.info(f"Successfully sent test tokens to {public_key}")
+
+
 def add_user_to_network(
     user_id: str,
-    is_wallet: bool = False
 ) -> N_UserAccount:
 
-    new_user = registering_user_map[user_id].get("user")
+    new_user = N_UserAccount(
+        hash_id=user_id
+    )
 
     user = add_node_to_pdfs(new_user)
     logger.info(f"Added user to network: {user_id}")
 
-    if not is_wallet:
-        alpine = ipfs.ALPINE_NODE_MANIFEST 
-        updated_alpine = alpine.copy()
-
-        updated_alpine.users[user_id] = {
-            "hash_id": user.hash_id,
-            "timestamp": datetime.now().timestamp()
-        }
-
-        ipfs.update_alpine_node_manifest(updated_alpine)
 
     return user
 
@@ -101,7 +61,7 @@ def add_user_to_network(
 Core Operations
 '''
 
-def add_node_to_pdfs(node: PDFSNode) -> PDFSNode:
+def add_node_to_pdfs(node: PDOSNode) -> PDOSNode:
     node_json = json.loads(node.json())
     node_json.pop("hash_id ", None)
 

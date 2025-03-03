@@ -1,22 +1,5 @@
-from datetime import datetime
-from pydantic import BaseModel, Field 
-from dataclasses import dataclass, field
+from pydantic import BaseModel
 from typing import Dict, List, Optional
-from webauthn.helpers.structs import AuthenticatorTransport
-import base64
-
-ALPINE_ID = "VMWz3UWdXvd4uy+h4jpfsOG2KuZpcLy0Nuj4GhoajkE="
-
-'''
-Data Interfaces
-'''
-@dataclass
-class Credential():
-    id: str
-    public_key: str
-    sign_count: int
-    transports: Optional[List[AuthenticatorTransport]] = None
-
 
 '''
 Core Graph Data Structures
@@ -28,17 +11,15 @@ class Edge(BaseModel):
     child_hash_id: Optional[str]
 
 
-class PDFSNode(BaseModel):
+class PDOSNode(BaseModel):
     type: Optional[str]
     hash_id: Optional[str]
     edges: Optional[dict[str, Optional[Edge]]]
     data: Optional[str] = None
 
 
-
 class BinaryDataManifest(BaseModel):
     required: bool = False
-
 
 
 class Message(BaseModel):
@@ -50,12 +31,12 @@ class Message(BaseModel):
 '''
 Nodes and Edges
 '''
-class N_TreatmentProgress(PDFSNode):
-    type = "N_TreatmentProgress"
+class N_TreatmentProgress(PDOSNode):
+    type: Optional[str] = "N_TreatmentProgress"
 
 
-class N_TreatmentInstance_I(PDFSNode):
-    type = "N_TreatmentInstance_I"
+class N_TreatmentInstance_I(PDOSNode):
+    type: Optional[str] = "N_TreatmentInstance_I"
 
     #Encrypt
     date: str = ""
@@ -71,8 +52,9 @@ class TreatmentIntake(BaseModel):
     title: str
     value: Optional[str | int]
 
-class N_TreatmentBinary(PDFSNode):
-    type = "N_TreatmentBinary"
+
+class N_TreatmentBinary(PDOSNode):
+    type: Optional[str] = "N_TreatmentBinary"
 
     #Encrypt
     name: str = ""
@@ -85,8 +67,8 @@ class N_TreatmentBinary(PDFSNode):
     execution_binary: str = "" 
     intake: Dict[str, TreatmentIntake]
 
-class N_Treatment_I(PDFSNode):
-    type = "N_Treatment_"
+class N_Treatment_I(PDOSNode):
+    type: Optional[str] = "N_Treatment_"
     edges: dict[str, Optional[Edge]] = {
         "e_out_TreatmentBinary": None
     }
@@ -95,40 +77,35 @@ class N_Treatment_I(PDFSNode):
         self.type = "N_Treatment_" + instanceType
 
 
-class N_DataGroup_I(PDFSNode):
-    type = "N_DataGroup_"
+class N_DataGroup_I(PDOSNode):
+    type: Optional[str] = "N_DataGroup_"
     edges: dict[str, Optional[Edge]] = {}
 
     def init_instance(self, instanceType: str):
         self.type = "N_DataGroup_" + instanceType
 
 
-class N_DataManifest(PDFSNode):
-    type = "N_DataManifest"
+class N_DataManifest(PDOSNode):
+    type: Optional[str] = "N_DataManifest"
     edges: dict[str, Optional[Edge]] = {}
 
 
-class N_TreatmentManifest(PDFSNode):
-    type = "N_TreatmentManifest"
+class N_TreatmentManifest(PDOSNode):
+    type: Optional[str] = "N_TreatmentManifest"
     edges: dict[str, Optional[Edge]] = {}
 
 
-
-
-class N_Inbox(PDFSNode):
-    type = "N_Inbox"
-
-    #Encrypt
-    #unread_messages: List[Message] = []
+class N_Inbox(PDOSNode):
+    type: Optional[str] = "N_Inbox"
 
 
 class AccessPackage(BaseModel):
     ciphertext: str
     dataToEncryptHash: str
 
-class N_UserAccount(PDFSNode):
-    type = "N_UserAccount"
-    is_root = True
+class N_UserAccount(PDOSNode):
+    type: Optional[str] = "N_UserAccount"
+    is_root: bool = True
 
     edges: dict[str, Optional[Edge]] = {
         "e_out_TreatmentManifest": None,
@@ -162,7 +139,7 @@ class AlpineNodeManifest(BaseModel):
 Graph Mapper
 '''
 class NetworkMapperClass(BaseModel):
-    node ={
+    node: dict[str, type[PDOSNode]] ={
         "N_Inbox": N_Inbox,
 
         "N_UserAccount": N_UserAccount,
@@ -175,6 +152,7 @@ class NetworkMapperClass(BaseModel):
         "N_Treatment_I": N_Treatment_I,
         "N_TreatmentInstance_I": N_TreatmentInstance_I,
         "N_TreatmentBinary": N_TreatmentBinary,
+        "N_TreatmentProgress": N_TreatmentProgress,
     }
 
 

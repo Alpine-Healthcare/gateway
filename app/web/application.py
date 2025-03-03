@@ -1,21 +1,18 @@
 from importlib import metadata
 from pathlib import Path
+import logging
+from logging.config import dictConfig
 
 from fastapi import FastAPI
 from fastapi.responses import UJSONResponse
-
 from fastapi.staticfiles import StaticFiles
-
-from logging.config import dictConfig
-import logging
-from app.utils.log_config import LogConfig
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.utils.log_config import LogConfig
 
 dictConfig(LogConfig().dict())
-logger = logging.getLogger("mycoolapp")
+logger = logging.getLogger("Gateway")
 
-from app.services.pdos.ipfs import start_ipfs
 from app.web.api.router import api_router
 from app.web.lifetime import register_shutdown_event, register_startup_event
 
@@ -36,7 +33,7 @@ def get_app() -> FastAPI:
     :return: application.
     """
     app = FastAPI(
-        title="PDOS Gateway",
+        title="Gateway",
         version=metadata.version("app"),
         docs_url=None,
         redoc_url=None,
@@ -67,7 +64,5 @@ def get_app() -> FastAPI:
         allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
         allow_headers=["*"],  # Allow all headers
     )
-
-    start_ipfs()
 
     return app
