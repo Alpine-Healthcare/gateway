@@ -101,7 +101,7 @@ def add_node_to_pdos(
     new_tree_path = []
     new_tree_path.append(newly_added_pdfs_node.hash_id)
 
-    def update_parent_nodes(parent_node_hash_list: List[str], new_node: PDFSNode) -> PDFSNode:
+    def update_parent_nodes(parent_node_hash_list: List[str], new_node: PDOSNode) -> PDOSNode:
 
         next_parent_hash = parent_node_hash_list.pop()
 
