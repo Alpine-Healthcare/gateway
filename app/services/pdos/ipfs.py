@@ -102,15 +102,10 @@ def add_bytes(blob: bytes):
 
 def get_bytes(hash_id: str):
     url = f"{settings.ipfs_url}/api/v0/cat?arg=/ipfs/{hash_id}"
-    response = requests.post(url, stream=True)
+    response = requests.post(url)
     response.raise_for_status()
 
-    # Read chunks and accumulate into a single bytes object
-    data = b""
-    for chunk in response.iter_content(chunk_size=8192):
-        if chunk:
-            data += chunk
-    return data
+    return response.content
 
 def get(hash_id: str, return_raw: bool = False):
     url = f"{settings.ipfs_url}/api/v0/cat?arg=/ipfs/{hash_id}"
