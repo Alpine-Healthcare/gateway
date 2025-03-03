@@ -231,13 +231,13 @@
           await createCore();
           break;
         case 'generateAccessPackage':
-          updateButtonTitle("Generating Access Package")
+          updateButtonTitle("Creating encryption keys and onboarding. This may take a few minutes.")
           const accessPackage = await pdos().modules.encryption.generateAccessPackage()
           injectedData.ACCESS_PACKAGE = accessPackage;
           emit("generateAccessPackage", accessPackage );
           break;
         case 'setAccessPackage':
-          updateButtonTitle("Unpacking Access Package")
+          updateButtonTitle("Fetching encryption keys and setting up")
           try {
             emit("random", "settng access package");
             injectedData.ACCESS_PACKAGE = JSON.parse(window.data);
