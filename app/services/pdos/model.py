@@ -34,6 +34,11 @@ Nodes and Edges
 class N_TreatmentProgress(PDOSNode):
     type: Optional[str] = "N_TreatmentProgress"
 
+class N_TreatmentEncounter_I(PDOSNode):
+    type: Optional[str] = "N_TreatmentEncounter_I"
+
+    def init_instance(self, instanceType: str):
+        self.type = "N_TreatmentEncounter_" + instanceType
 
 class N_TreatmentInstance_I(PDOSNode):
     type: Optional[str] = "N_TreatmentInstance_I"
