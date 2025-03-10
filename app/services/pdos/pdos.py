@@ -65,15 +65,12 @@ Core Operations
 '''
 
 def add_node_to_pdfs(node: PDOSNode) -> PDOSNode:
-    print("node: ", node)
     node_json = json.loads(node.json())
     node_json.pop("hash_id ", None)
 
     del node_json["hash_id"]
 
-    print("dump: ", json.dumps(node_json))
     hash = ipfs.add(json.dumps(node_json))
-    print("hash: ", hash)
 
     node.hash_id = hash
     logger.info(f"Successfully added node to PDOS: {hash} of type {node.type}")

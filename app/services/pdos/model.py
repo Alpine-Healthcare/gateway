@@ -161,6 +161,7 @@ class NetworkMapperClass(BaseModel):
         "N_TreatmentBinary": N_TreatmentBinary,
         "N_TreatmentProgress": N_TreatmentProgress,
         "N_PDOSStorageNode_I": N_PDOSStorageNode_I,
+        "N_TreatmentEncounter": N_TreatmentEncounter,
     }
 
 
