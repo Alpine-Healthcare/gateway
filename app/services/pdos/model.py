@@ -5,7 +5,6 @@ from typing import Dict, List, Optional
 Core Graph Data Structures
 '''
 
-
 class Edge(BaseModel):
     type: Optional[str]
     child_hash_id: Optional[str]
@@ -17,6 +16,10 @@ class PDOSNode(BaseModel):
     edges: Optional[dict[str, Optional[Edge]]] = None
     data: Optional[str] = None
 
+class N_PDOSStorageNode(PDOSNode):
+    type: Optional[str] = "N_PDOSStorageNode_I"
+    def init_instance(self, instanceType: str):
+        self.type = "N_PDOSStorageNode_" + instanceType
 
 class BinaryDataManifest(BaseModel):
     required: bool = False
@@ -34,11 +37,9 @@ Nodes and Edges
 class N_TreatmentProgress(PDOSNode):
     type: Optional[str] = "N_TreatmentProgress"
 
-class N_TreatmentEncounter_I(PDOSNode):
-    type: Optional[str] = "N_TreatmentEncounter_I"
+class N_TreatmentEncounter(PDOSNode):
+    type: Optional[str] = "N_TreatmentEncounter"
 
-    def init_instance(self, instanceType: str):
-        self.type = "N_TreatmentEncounter_" + instanceType
 
 class N_TreatmentInstance_I(PDOSNode):
     type: Optional[str] = "N_TreatmentInstance_I"
