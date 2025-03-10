@@ -98,6 +98,8 @@ def add_node_to_pdos(
         data_model,
     )
 
+    print("newly added pdfs node: ", newly_added_pdfs_node)
+
     new_tree_path = []
     new_tree_path.append(newly_added_pdfs_node.hash_id)
 
@@ -122,25 +124,8 @@ def add_node_to_pdos(
         )
 
         new_tree_path.append(new_parent_node.hash_id)
-        print("parent_node: ", parent_node)
         if hasattr(parent_node, "is_root") and parent_node.is_root:
-            print("its a root")
-            if (parent_node.type == "N_UserAccount"):
-                pass
-                '''
-                alpine = ipfs.ALPINE_NODE_MANIFEST 
-                updated_alpine = alpine.copy()
-                userAccount = N_UserAccount(**parent_node.dict())
-
-                if (parent_node.hash_id in updated_alpine.users):
-                    del updated_alpine.users[parent_node.hash_id]
-
-                updated_alpine.users[userAccount.credentials[0].id] = {
-                    "hash_id": new_parent_node.hash_id,
-                    "timestamp": datetime.now().timestamp()
-                }
-                ipfs.update_alpine_node_manifest(updated_alpine)
-                '''
+            return
         else:
             update_parent_nodes(parent_node_hash_list, new_parent_node)
 
