@@ -16,7 +16,7 @@ class PDOSNode(BaseModel):
     edges: Optional[dict[str, Optional[Edge]]] = None
     data: Optional[str] = None
 
-class N_PDOSStorageNode(PDOSNode):
+class N_PDOSStorageNode_I(PDOSNode):
     type: Optional[str] = "N_PDOSStorageNode_I"
     def init_instance(self, instanceType: str):
         self.type = "N_PDOSStorageNode_" + instanceType
@@ -160,6 +160,7 @@ class NetworkMapperClass(BaseModel):
         "N_TreatmentInstance_I": N_TreatmentInstance_I,
         "N_TreatmentBinary": N_TreatmentBinary,
         "N_TreatmentProgress": N_TreatmentProgress,
+        "N_PDOSStorageNode_I": N_PDOSStorageNode_I,
     }
 
 
