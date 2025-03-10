@@ -71,6 +71,7 @@ def add_node_to_pdfs(node: PDOSNode) -> PDOSNode:
 
     del node_json["hash_id"]
 
+    print("dump: ", json.dumps(node_json))
     hash = ipfs.add(json.dumps(node_json))
     print("hash: ", hash)
 
