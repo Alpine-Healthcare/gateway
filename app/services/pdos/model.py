@@ -37,6 +37,13 @@ Nodes and Edges
 class N_TreatmentProgress(PDOSNode):
     type: Optional[str] = "N_TreatmentProgress"
 
+class N_TreatmentEncounterInstance_I(PDOSNode):
+    type: Optional[str] = "N_TreatmentEncounterInstance_I"
+
+    def init_instance(self, instanceType: str):
+        self.type = "N_TreatmentEncounterInstance_" + instanceType
+
+
 class N_TreatmentEncounter(PDOSNode):
     type: Optional[str] = "N_TreatmentEncounter"
 
@@ -162,6 +169,7 @@ class NetworkMapperClass(BaseModel):
         "N_TreatmentProgress": N_TreatmentProgress,
         "N_PDOSStorageNode_I": N_PDOSStorageNode_I,
         "N_TreatmentEncounter": N_TreatmentEncounter,
+        "N_TreatmentEncounterInstance_I": N_TreatmentEncounterInstance_I,
     }
 
 
