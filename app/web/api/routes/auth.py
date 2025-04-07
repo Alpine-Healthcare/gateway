@@ -19,6 +19,8 @@ def register_wallet_user(body: Dict[Any, Any]):
 @router.post("/register")
 def register_user(body: Dict[Any, Any]):
     public_key= body["publicKey"]
+    print("public_key", public_key)
     n_user_account = add_user_to_network(public_key)
+    print("n_user_account", n_user_account)
     send_user_test_tokens(public_key)
     return n_user_account

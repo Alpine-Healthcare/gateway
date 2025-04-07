@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 '''
 Core Graph Data Structures
@@ -77,7 +77,7 @@ class N_TreatmentBinary(PDOSNode):
     description: str = ""
     data_manifest: dict[str, BinaryDataManifest] = { }
     frequency: str = ""
-    execution_binary: str = "" 
+    execution_binary: List[Dict[str, Any]] = [] 
     intake: Dict[str, TreatmentIntake]
 
 class N_Treatment_I(PDOSNode):
@@ -89,6 +89,11 @@ class N_Treatment_I(PDOSNode):
     def init_instance(self, instanceType: str):
         self.type = "N_Treatment_" + instanceType
 
+class N_DataRecord_I(PDOSNode):
+    type: Optional[str] = "N_DataRecord_I"
+
+    def init_instance(self, instanceType: str):
+        self.type = "N_DataRecord_" + instanceType
 
 class N_DataGroup_I(PDOSNode):
     type: Optional[str] = "N_DataGroup_"
@@ -154,12 +159,15 @@ Graph Mapper
 '''
 class NetworkMapperClass(BaseModel):
     node: dict[str, type[PDOSNode]] ={
+        "N_PDOSStorageNode_I": N_PDOSStorageNode_I,
+
         "N_Inbox": N_Inbox,
 
         "N_UserAccount": N_UserAccount,
 
         "N_DataManifest": N_DataManifest,
         "N_DataGroup_I": N_DataGroup_I,
+        "N_DataRecord_I": N_DataRecord_I,
 
 
         "N_TreatmentManifest": N_TreatmentManifest,
@@ -167,7 +175,6 @@ class NetworkMapperClass(BaseModel):
         "N_TreatmentInstance_I": N_TreatmentInstance_I,
         "N_TreatmentBinary": N_TreatmentBinary,
         "N_TreatmentProgress": N_TreatmentProgress,
-        "N_PDOSStorageNode_I": N_PDOSStorageNode_I,
         "N_TreatmentEncounter": N_TreatmentEncounter,
         "N_TreatmentEncounterInstance_I": N_TreatmentEncounterInstance_I,
     }
