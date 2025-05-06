@@ -157,7 +157,7 @@ async def add_blob_to_pdos(
         raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
 
 
-@router.get("/pdos/image")
+@router.get("/pdos/blob")
 async def get_blob_from_pdos(
     hash: str,
 ):

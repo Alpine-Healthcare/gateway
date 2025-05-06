@@ -1,355 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <link rel="icon" type="image/x-icon" href="./favicon.ico?" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="shortcut icon" href="./favicon.ico" />
+        <title>Alpine</title>
+        <script src="https://unpkg.com/@simplewebauthn/browser@10.0.0/dist/bundle/index.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mobx@6.13.7/dist/mobx.umd.production.min.js"></script>
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <link rel="icon" type="image/x-icon" href="./favicon.ico?">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-  <link rel="shortcut icon" href="./favicon.ico" />
-  <title>Alpine</title>
-  <script src="https://unpkg.com/@simplewebauthn/browser@10.0.0/dist/bundle/index.umd.min.js"></script>
+        <script>
+            window.process = { env: { NODE_ENV: "production" } };
+        </script>
 
-  <script>
-    window.process = { env: { NODE_ENV: 'production' } };
-  </script>
+        <script src="http://localhost:3000/index.umd.js"></script>
 
-  <script src="http://localhost:3000/index.umd.js"></script>
+        <meta property="og:title" content="Alpine" />
+        <meta property="og:description" content="Open Health Marketplace" />
+        <meta property="og:image" content="/mountains.webp" />
+        <meta property="og:url" content="alpine.healthcare" />
+        <meta property="og:type" content="website" />
 
+        <!-- Optional Open Graph Tags -->
+        <meta property="og:site_name" content="Name of your website" />
+        <meta property="og:locale" content="Locale of your content (e.g., en_US)" />
+        <meta
+            property="og:video"
+            content="URL to a video file if your content is a video"
+        />
 
-  <meta property="og:title" content="Alpine" />
-  <meta property="og:description" content="Open Health Marketplace" />
-  <meta property="og:image" content="/mountains.webp" />
-  <meta property="og:url" content="alpine.healthcare" />
-  <meta property="og:type" content="website" />
-
-  <!-- Optional Open Graph Tags -->
-  <meta property="og:site_name" content="Name of your website" />
-  <meta property="og:locale" content="Locale of your content (e.g., en_US)" />
-  <meta property="og:video" content="URL to a video file if your content is a video" />
-
-  <meta content="./public/flowers.jpeg" property="og:image">
-  <style>
-    .moving-color-button {
-      font-size: 16px;
-      padding: 10px 20px;
-      border: none;
-      color: white;
-      background: transparent;
-      cursor: pointer;
-      outline: none;
-      margin-top: 50px;
-    }
-
-    @keyframes GradientBackground {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    body {
-      background-color: transparent;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      position: relative;
-    }
-
-    button {
-      cursor: pointer;
-      background-color: black;
-      color: #f9f0c3;
-      border-radius: 0px;
-      padding: 10px;
-      width: 100%;
-      border-color: black;
-      background-color: #f9f0c3;
-      color: black;
-      border-color: black;
-    }
-
-    button::hover {
-      background-color: grey;
-      color: #f9f0c3;
-      border-color: black;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    .logoContainer {
-      z-index: 8;
-      position: absolute;
-      height: 100vh;
-      font-size: 5rem;
-      bottom: 10px;
-      top: 10%;
-      left: 100px;
-      font-family: 'Montserrat', sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-
-    .links {
-      display: flex;
-      flex-direction: column;
-      font-size: 2rem;
-      gap: 10px;
-      transition: opacity 5s;
-      justify-content: flex-end;
-    }
-
-    .mountains {
-      position: absolute;
-      right: 0;
-      width: 50vw;
-      height: 100vh;
-      object-fit: cover;
-      overflow: hidden;
-    }
-
-    .mobile {
-      display: none;
-    }
-      p {
-        width: 400px;
-      }
-
-    @media (max-width: 500px) {
-      body {
-        overflow-y: scroll;
-      }
-      Button {
-        background-color: #f9f0c3;
-        color: black;
-        border-color: black;
-      }
-
-      .mobile {
-        display: block;
-      }
-
-      .logoContainer {
-        left: 20px;
-        right: 20px;
-        position: unset;
-        height: unset;
-        padding-left: 40px;
-        padding-right: 40px;
-        padding-top: 10px;
-        padding-bottom: 20px;
-        background-color: rgb(0 0 0 / 0%);
-        transition: background-color 2s;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-
-      .mountains {
-        width: 0;
-        height: 40vh;
-      }
-
-      .links {
-        font-size: 1.5rem;
-        flex-direction: column;
-        margin-top: 0px;
-        padding-bottom: 20px;
-      }
-
-      button {
-        width: 100%;
-        height: 60px;
-        border-radius: 0px;
-
-      }
-
-      p {
-        width: 80vw
-      }
-    }
-  </style>
-  <script type="module">
-    import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
-
-    let Core;
-    let pdos;
-    let actions;
-
-    const receivedPortalMessages = {}
-
-    const injectedData = {
-      PUBLIC_KEY: undefined,
-      ACCESS_PACKAGE: undefined
-    }
-
-    function emit(type, prop, data) {
-      if (window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage(JSON.stringify({
-          type,
-          prop,
-          data
-        }));
-      } else {
-        console.log("emitting: ", type, prop, data);
-      }
-    }
-
-    function updateButtonTitle(title) {
-      const el = document.getElementById("but")
-      el.innerText = title
-    }
-
-    window.addEventListener("rn-web-bridge", async function(event) {
-      switch (window.message) {
-        case 'injectPublicKey':
-          injectedData.PUBLIC_KEY = window.data;
-          break;
-        case 'loadCore':
-          updateButtonTitle("Starting PDOS")
-          injectedData.PUBLIC_KEY = window.data;
-          await createCore();
-          break;
-        case 'generateAccessPackage':
-          updateButtonTitle("Creating encryption keys and onboarding. This may take a few minutes.")
-          const accessPackage = await pdos().modules.encryption.generateAccessPackage()
-          injectedData.ACCESS_PACKAGE = accessPackage;
-          emit("generateAccessPackage", accessPackage );
-          break;
-        case 'setAccessPackage':
-          updateButtonTitle("Fetching encryption keys and setting up")
-          try {
-            emit("random", "settng access package");
-            injectedData.ACCESS_PACKAGE = JSON.parse(window.data);
-            const decryptedAccessPackage = await pdos().modules.encryption.setAccessPackage(JSON.parse(window.data));
-          } catch (e) {
-            emit("error", "error setting access package" + JSON.stringify(e));
-          }
-          break;
-        default:
-          emit("random", "got type" + window.message, window.data);
-          break;
-      }
-
-    
-      receivedPortalMessages[window.message] = JSON.parse(window.data)
-
-      window.message = null;
-      window.data = null;
-      window.prop = null;
-
-    });
-
-    window.generateAccessPackage = async function generateAccessPackage() {
-      const accessPackage = await pdos().modules.encryption.generateAccessPackage()
-      injectedData.ACCESS_PACKAGE = accessPackage;
-    }
-
-    window.setAccessPackage = async function setAccessPackage() {
-      const decryptedAccessPackage = await pdos().modules.encryption.setAccessPackage(injectedData.ACCESS_PACKAGE);
-    }
-
-
-    window.createCore = async function createCore() {
-      Core = window.PDOS.Core;
-      pdos = window.PDOS.pdos;
-      actions = window.PDOS.actions;
-
-      if (!Core) {
-        emit("error", "Core not loaded");
-        return
-      }
-
-      try {
-        if (!ethers) {
-          emit("error", "ethers not loaded" );
-          return
-        } else {
-          emit("state", "ethers exists" );
-        }
-        
-        new Core({
-          env: "marigold",
-          context: {
-            gatewayURL: "https://network.alpine.healthcare/api"
-          },
-          modules: {
-            auth: {},
-            encryption: {
-              enabled: true,
-              portal: 'remote'
+        <meta content="./public/flowers.jpeg" property="og:image" />
+        <style>
+            .moving-color-button {
+                font-size: 16px;
+                padding: 10px 20px;
+                border: none;
+                color: white;
+                background: transparent;
+                cursor: pointer;
+                outline: none;
+                margin-top: 50px;
             }
-          }
-        });
-        
-        emit( "state", "coreStarted" );
 
-        await pdos().start()
-        pdos().modules.auth.setPublicKey(injectedData.PUBLIC_KEY);
-        await pdos().modules?.encryption?.setPortalSend((type, prop, data) => {
-          emit('random', 'got an emit from pdos', type + prop + data)
-          emit(type, prop, data)
-        })
-        await pdos().modules?.encryption?.setPortalReceive((type) => {
-          return new Promise((resolve) => {
-            const check = () => {
-              emit("random", typeof receivedPortalMessages[type]);
-              const checkReceived = receivedPortalMessages[type];
-              if (checkReceived) {
-                delete receivedPortalMessages[type];
-                resolve(checkReceived);
-              } else {
-                setTimeout(check, 1000);
-              }
+            @keyframes GradientBackground {
+                0% {
+                    background-position: 0% 50%;
+                }
+
+                50% {
+                    background-position: 100% 50%;
+                }
+
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            body {
+                background-color: transparent;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                position: relative;
+            }
+
+            button {
+                cursor: pointer;
+                background-color: black;
+                color: #f9f0c3;
+                border-radius: 0px;
+                padding: 10px;
+                width: 100%;
+                border-color: black;
+                background-color: #f9f0c3;
+                color: black;
+                border-color: black;
+            }
+
+            button::hover {
+                background-color: grey;
+                color: #f9f0c3;
+                border-color: black;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+
+            .logoContainer {
+                z-index: 8;
+                position: absolute;
+                height: 100vh;
+                font-size: 5rem;
+                bottom: 10px;
+                top: 10%;
+                left: 100px;
+                font-family: "Montserrat", sans-serif;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .links {
+                display: flex;
+                flex-direction: column;
+                font-size: 2rem;
+                gap: 10px;
+                transition: opacity 5s;
+                justify-content: flex-end;
+            }
+
+            .mountains {
+                position: absolute;
+                right: 0;
+                width: 50vw;
+                height: 100vh;
+                object-fit: cover;
+                overflow: hidden;
+            }
+
+            .mobile {
+                display: none;
+            }
+            p {
+                width: 400px;
+            }
+
+            @media (max-width: 500px) {
+                body {
+                    overflow-y: scroll;
+                }
+                Button {
+                    background-color: #f9f0c3;
+                    color: black;
+                    border-color: black;
+                }
+
+                .mobile {
+                    display: block;
+                }
+
+                .logoContainer {
+                    left: 20px;
+                    right: 20px;
+                    position: unset;
+                    height: unset;
+                    padding-left: 40px;
+                    padding-right: 40px;
+                    padding-top: 10px;
+                    padding-bottom: 20px;
+                    background-color: rgb(0 0 0 / 0%);
+                    transition: background-color 2s;
+                    height: 100vh;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+
+                .mountains {
+                    width: 0;
+                    height: 40vh;
+                }
+
+                .links {
+                    font-size: 1.5rem;
+                    flex-direction: column;
+                    margin-top: 0px;
+                    padding-bottom: 20px;
+                }
+
+                button {
+                    width: 100%;
+                    height: 60px;
+                    border-radius: 0px;
+                }
+
+                p {
+                    width: 80vw;
+                }
+            }
+        </style>
+        <script type="module">
+            import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
+
+            let Core;
+            let pdos;
+            let actions;
+
+            const receivedPortalMessages = {};
+
+            const injectedData = {
+                PUBLIC_KEY: undefined,
+                ACCESS_PACKAGE: undefined,
             };
-        
-            check();
-          });
-        });
-        emit("state", "pdosStarted" );
-      
-      } catch (e) {
-        emit( "error", "error loading core" + JSON.stringify(e));
-      }
-    }
 
-    function start() {
-      if (!window.PDOS) {
-        emit("error", "PDOS not loaded");
-        return
-      }
+            function emit(type, prop, data) {
+                if (window.ReactNativeWebView) {
+                    window.ReactNativeWebView.postMessage(
+                        JSON.stringify({
+                            type,
+                            prop,
+                            data,
+                        })
+                    );
+                } else {
+                    console.log("emitting: ", type, prop, data);
+                }
+            }
 
-      emit( "state", "pdosImportLoaded");
-    }
+            function updateButtonTitle(title) {
+                const el = document.getElementById("but");
+                el.innerText = title;
+            }
 
-    emit("state", "ready" );
-    start()
+            window.addEventListener("rn-web-bridge", async function (event) {
+                switch (window.message) {
+                    case "injectPublicKey":
+                        injectedData.PUBLIC_KEY = window.data;
+                        break;
+                    case "loadCore":
+                        updateButtonTitle("Starting PDOS");
+                        injectedData.PUBLIC_KEY = window.data;
+                        await createCore();
+                        break;
+                    case "generateAccessPackage":
+                        updateButtonTitle(
+                            "Creating encryption keys and onboarding. This may take a few minutes."
+                        );
+                        const accessPackage =
+                            await pdos().modules.encryption.generateAccessPackage();
+                        injectedData.ACCESS_PACKAGE = accessPackage;
+                        emit("generateAccessPackage", accessPackage);
+                        break;
+                    case "setAccessPackage":
+                        updateButtonTitle("Fetching encryption keys and setting up");
+                        try {
+                            emit("random", "settng access package");
+                            injectedData.ACCESS_PACKAGE = JSON.parse(window.data);
+                            const decryptedAccessPackage =
+                                await pdos().modules.encryption.setAccessPackage(
+                                    JSON.parse(window.data)
+                                );
+                        } catch (e) {
+                            emit(
+                                "error",
+                                "error setting access package" + JSON.stringify(e)
+                            );
+                        }
+                        break;
+                    default:
+                        emit("random", "got type" + window.message, window.data);
+                        break;
+                }
 
+                receivedPortalMessages[window.message] = JSON.parse(window.data);
 
-  </script>
-</head>
+                window.message = null;
+                window.data = null;
+                window.prop = null;
+            });
 
-  <body>
-    <button id="but" type="button" class="moving-color-button">Running a PDOS Portal</button>
-  </body>
+            window.generateAccessPackage = async function generateAccessPackage() {
+                const accessPackage =
+                    await pdos().modules.encryption.generateAccessPackage();
+                injectedData.ACCESS_PACKAGE = accessPackage;
+            };
+
+            window.setAccessPackage = async function setAccessPackage() {
+                const decryptedAccessPackage =
+                    await pdos().modules.encryption.setAccessPackage(
+                        injectedData.ACCESS_PACKAGE
+                    );
+            };
+
+            window.createCore = async function createCore() {
+                Core = window.PDOS.Core;
+                pdos = window.PDOS.pdos;
+                actions = window.PDOS.actions;
+
+                if (!Core) {
+                    emit("error", "Core not loaded");
+                    return;
+                }
+
+                try {
+                    if (!ethers) {
+                        emit("error", "ethers not loaded");
+                        return;
+                    } else {
+                        emit("state", "ethers exists");
+                    }
+
+                    new Core({
+                        env: "marigold",
+                        context: {
+                            gatewayURL: "https://network.alpine.healthcare/api",
+                        },
+                        modules: {
+                            auth: {},
+                            encryption: {
+                                enabled: true,
+                                portal: "remote",
+                            },
+                        },
+                    });
+
+                    emit("state", "coreStarted");
+
+                    await pdos().start();
+                    pdos().modules.auth.setPublicKey(injectedData.PUBLIC_KEY);
+                    await pdos().modules?.encryption?.setPortalSend(
+                        (type, prop, data) => {
+                            emit("random", "got an emit from pdos", type + prop + data);
+                            emit(type, prop, data);
+                        }
+                    );
+                    await pdos().modules?.encryption?.setPortalReceive((type) => {
+                        return new Promise((resolve) => {
+                            const check = () => {
+                                emit("random", typeof receivedPortalMessages[type]);
+                                const checkReceived = receivedPortalMessages[type];
+                                if (checkReceived) {
+                                    delete receivedPortalMessages[type];
+                                    resolve(checkReceived);
+                                } else {
+                                    setTimeout(check, 1000);
+                                }
+                            };
+
+                            check();
+                        });
+                    });
+                    emit("state", "pdosStarted");
+                } catch (e) {
+                    emit("error", "error loading core" + JSON.stringify(e));
+                }
+            };
+
+            function start() {
+                if (!window.PDOS) {
+                    emit("error", "PDOS not loaded");
+                    return;
+                }
+
+                emit("state", "pdosImportLoaded");
+            }
+
+            emit("state", "ready");
+            start();
+        </script>
+    </head>
+
+    <body>
+        <button id="but" type="button" class="moving-color-button">
+            Running a PDOS Portal
+        </button>
+    </body>
 </html>

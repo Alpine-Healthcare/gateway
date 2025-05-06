@@ -10,12 +10,6 @@ from app.settings import settings
 router = APIRouter()
 
 
-@router.post("/auth/register-wallet-user")
-def register_wallet_user(body: Dict[Any, Any]):
-    public_key= body["publicKey"]
-    return add_user_to_network(public_key)
-
-
 @router.post("/register")
 def register_user(body: Dict[Any, Any]):
     public_key= body["publicKey"]

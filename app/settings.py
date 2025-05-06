@@ -54,6 +54,8 @@ class Settings(BaseSettings):
 
     infura_url: str = os.environ.get("INFURA_URL")
 
+    anthropic_api_key: str = os.environ.get("ANTHROPIC_API_KEY")
+
     class Config:
         env_file = ".env"
         env_prefix = "GATEWAY_"

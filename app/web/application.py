@@ -19,6 +19,7 @@ from app.web.lifetime import register_shutdown_event, register_startup_event
 # Define the allowed origins
 origins = [
     "http://localhost:3000",  # Frontend development server
+    "http://localhost:5173",  # Frontend development server
 ]
 
 APP_ROOT = Path(__file__).parent.parent
