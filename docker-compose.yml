@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   gateway: &main_app
@@ -6,10 +6,8 @@ services:
       context: .
       dockerfile: ./Dockerfile
       target: prod
-    image: gateway 
+    image: gateway
     restart: always
-    depends_on:
-      - ipfs
     ports:
       - 8000:8000
     env_file:
