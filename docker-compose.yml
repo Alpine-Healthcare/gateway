@@ -19,3 +19,5 @@ services:
       GATEWAY_DB_USER: gateway
       GATEWAY_DB_PASS: gateway
       GATEWAY_DB_BASE: gateway
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
